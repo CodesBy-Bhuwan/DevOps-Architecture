@@ -1,0 +1,62 @@
+jenkins:
+  systemMessage: "DevOps Platform Managed by Ansible (Enterprise RBAC)"
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin"
+        - id: "developer"
+          password: "developer123"
+        - id: "tester"
+          password: "tester123"
+        - id: "jrdevops"
+          password: "jrdevops123"
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+        # Admin gets full control
+        - "Overall/Administer:admin"
+        
+        # Devs can build and read, but cannot configure or delete
+        - "Overall/Read:dev"
+        - "Job/Build:dev"
+        - "Job/Read:dev"
+        - "Job/Workspace:dev"
+        
+        # Testers can build and read
+        - "Overall/Read:tester"
+        - "Job/Build:tester"
+        - "Job/Read:tester"
+        
+        # Junior DevOps can read and configure, but CANNOT delete
+        - "Overall/Read:jrdevops"
+        - "Job/Configure:jrdevops"
+        - "Job/Build:jrdevops"
+        - "Job/Read:jrdevops"
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          # SonarQube Credential
+          - string:
+              scope: GLOBAL
+              id: "sonarqube-token"
+              secret: "admin"
+              description: "SonarQube Authentication Token"
+          
+          # Nexus Credential (Using Service Account, NOT admin!)
+          - usernamePassword:
+              scope: GLOBAL
+              id: "nexus-creds"
+              username: "jenkins-ci"
+              password: "admin123"
+              description: "Service Account to push artifacts to Nexus"
+
+unclassified:
+  sonarGlobalConfiguration:
+    installations:
+      - name: "SonarQube"
+        serverUrl: "http://{{ ansible_host }}:9000"
+        credentialsId: "sonarqube-token"

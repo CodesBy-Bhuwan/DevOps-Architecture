@@ -1,0 +1,9 @@
+---
+- name: Stop Grafana
+  hosts: worker2
+  become: yes
+
+  tasks:
+    - name: Stop Grafana container
+      command: docker stop grafana
+      ignore_errors: yes

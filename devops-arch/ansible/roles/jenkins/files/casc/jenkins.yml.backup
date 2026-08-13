@@ -1,0 +1,54 @@
+jenkins:
+  systemMessage: "DevOps Platform Managed by Ansible"
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin"
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+        - "Overall/Administer:admin"
+        - "Overall/Read:anonymous"
+        - "Job/Build"
+        - "Job/Read"
+        - "Job/Configure"
+        - "Job/Delete"
+        - "View/Read"
+        - "View/Create"
+
+# NEW: Injecting credentials for SonarQube
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - string:
+              scope: GLOBAL
+              id: "sonarqube-token"
+              secret: "admin"  # Default SonarQube password. Change this if you changed SonarQube's password!
+              description: "SonarQube Authentication Token"
+
+unclassified:
+  sonarQubeServers:
+    installations:
+      - name: "SonarQube"
+        serverUrl: "http://192.168.56.10:9000"
+        credentialsId: "sonarqube-token" # NEW: Telling Jenkins which credential to use
+        
+  globalConfigFiles:
+    configs:
+      - mavenSettings:
+          id: "nexus-settings"
+          name: "Nexus Maven Settings"
+          content: |
+            <settings>
+              <mirrors>
+                <mirror>
+                  <id>nexus</id>
+                  <mirrorOf>*</mirrorOf>
+                  <url>http://192.168.56.10:8081/repository/maven-public/</url>
+                </mirror>
+              </mirrors>
+            </settings>
+          providerName: "standard"

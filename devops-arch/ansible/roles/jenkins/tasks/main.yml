@@ -1,0 +1,12 @@
+---
+- name: Include Base Jenkins Installation
+  import_tasks: install.yml
+  tags: [base, jenkins_base]
+
+- name: Include Jenkins Plugins Installation
+  import_tasks: plugins.yml
+  tags: [plugins, jenkins_plugins]
+
+- name: Include SonarQube Integration (JCasC)
+  import_tasks: casc.yml
+  tags: [integrate, jenkins_integrate]

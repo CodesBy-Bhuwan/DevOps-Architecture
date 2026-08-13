@@ -1,0 +1,85 @@
+---
+- name: Include install tasks
+  import_tasks: install.yml
+
+- name: Create Jenkins directory
+  ansible.builtin.file:
+    path: /opt/jenkins
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Copy docker-compose file
+  ansible.builtin.copy:
+    src: docker-compose.yml
+    dest: /opt/jenkins/docker-compose.yml
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Start Jenkins container
+  ansible.builtin.command: docker compose up -d
+  args:
+    chdir: /opt/jenkins
+  changed_when: false
+
+- name: Wait for Jenkins to be fully up and running
+  ansible.builtin.uri:
+    url: "http://{{ ansible_host }}:8080/login"
+    method: GET
+    status_code: [200, 403, 503] # We still allow 503 so the task doesn't crash
+  register: jenkins_status
+  until: jenkins_status.status in [200, 403] # BUT we only stop waiting for 200 or 403!
+  retries: 60
+  delay: 5
+
+#  ansible.builtin.debug:
+#    msg: |
+#      ==================================================
+#      JENKINS DEPLOYED SUCCESSFULLY
+#      ==================================================
+#      URL: http://{{ ansible_host }}:8080
+#      INITIAL PASSWORD: {{ jenkins_password.stdout | default('Already initialized or file not found') }}
+#      ==================================================
+
+- name: Copy JCasC configuration files to host
+  ansible.builtin.copy:
+    src: casc/
+    dest: /opt/jenkins/casc/
+
+- name: Include Jenkins plugins installation
+  import_tasks: plugins.yml
+
+#- name: Include SonarQube integration
+#  import_tasks: sonarqube.yml
+
+#- name: Include Nexus integration
+#  import_tasks: nexus.yml
+
+# ... (Your existing Jenkins tasks like plugins, casc copy, etc.) ...
+
+- name: Check SonarQube credential via API
+  ansible.builtin.uri:
+    url: "http://{{ ansible_host }}:8080/credentials/store/system/domain/_/credential/sonarqube-token/api/json"
+    method: GET
+    user: "{{ jenkins_admin_user }}"
+    password: "{{ jenkins_admin_password }}"
+  register: sonar_cred_check
+  failed_when: false
+
+- name: Verify SonarQube credential was injected
+  ansible.builtin.uri:
+    url: "http://{{ ansible_host }}:8080/credentials/store/system/domain/_/credential/sonarqube-token/api/json"
+    method: GET
+    user: "{{ jenkins_admin_user }}"
+    password: "{{ jenkins_admin_password }}"
+    status_code: 200
+  register: sonar_cred_check
+
+- name: Fail if SonarQube integration is broken
+  ansible.builtin.assert:
+    that:
+      - sonar_cred_check.status == 200
+    fail_msg: "AUTOMATION FAILED: Jenkins does not have the SonarQube credential."
+    success_msg: "AUTOMATION PASSED: SonarQube is successfully integrated with Jenkins!"

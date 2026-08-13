@@ -1,0 +1,35 @@
+---
+
+- name: Build and Start Jenkins
+  community.docker.docker_compose_v2:
+    project_src: /opt/jenkins
+    state: present
+    build: always
+
+- name: Wait for Jenkins container
+  ansible.builtin.command:
+    cmd: docker inspect -f '{{ "{{.State.Running}}" }}' jenkins
+  register: jenkins_running
+  retries: 30
+  delay: 5
+  until: jenkins_running.stdout == "true"
+  changed_when: false
+
+- name: Read initial admin password
+  ansible.builtin.command:
+    cmd: docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+  register: jenkins_password
+  retries: 20
+  delay: 5
+  until: jenkins_password.rc == 0
+  changed_when: false
+
+- name: Jenkins Information
+  ansible.builtin.debug:
+    msg:
+      - "======================================"
+      - " Jenkins is Ready"
+      - " URL      : http://192.168.56.10:8080"
+      - " Username : admin"
+      - " Password : {{ jenkins_password.stdout }}"
+      - "======================================"

@@ -1,0 +1,8 @@
+---
+- name: Start Prometheus
+  hosts: worker2
+  become: yes
+
+  tasks:
+    - name: Start Prometheus container
+      command: docker start prometheus

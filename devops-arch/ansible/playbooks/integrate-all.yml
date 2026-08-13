@@ -1,0 +1,8 @@
+---
+# This playbook runs ALL integrations in the exact correct dependency order.
+
+- import_playbook: integrate-tools.yml
+# When we build monitoring, it will look like this:
+# - import_playbook: integrate-monitoring.yml
+# When we build K8s/ArgoCD, it will look like this:
+# - import_playbook: integrate-argocd.yml

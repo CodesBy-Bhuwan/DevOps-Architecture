@@ -1,0 +1,7 @@
+---
+- name: Deploy Grafana
+  hosts: monitoring-node
+  become: yes
+
+  roles:
+    - grafana

@@ -1,0 +1,8 @@
+---
+- name: Start Nexus
+  hosts: master
+  become: yes
+
+  tasks:
+    - command: docker start nexus
+      ignore_errors: yes

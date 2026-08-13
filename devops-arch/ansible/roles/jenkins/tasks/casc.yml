@@ -1,0 +1,18 @@
+---
+- name: Render JCasC configuration to host
+  ansible.builtin.template:
+    src: jenkins.yml.j2               # <-- Changed from copy/src
+    dest: /opt/jenkins/casc/jenkins.yml
+
+- name: Restart Jenkins to apply JCasC
+  ansible.builtin.command: docker restart jenkins
+  changed_when: false
+
+- name: Wait for Jenkins to be ready
+  ansible.builtin.uri:
+    url: "http://{{ ansible_host }}:8080/login"
+    status_code: [200, 403]
+  register: result
+  until: result.status in [200, 403]
+  retries: 60
+  delay: 5

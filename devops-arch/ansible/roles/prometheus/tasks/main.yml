@@ -1,0 +1,25 @@
+---
+- name: Create Prometheus directory
+  file:
+    path: /opt/prometheus
+    state: directory
+    mode: "0755"
+
+- name: Copy Prometheus configuration
+  copy:
+    src: prometheus.yml
+    dest: /opt/prometheus/prometheus.yml
+    mode: "0644"
+
+- name: Remove old Prometheus container
+  command: docker rm -f prometheus
+  ignore_errors: yes
+
+- name: Run Prometheus container
+  command: >
+    docker run -d
+    --name prometheus
+    --restart unless-stopped
+    -p {{ prometheus_port }}:9090
+    -v /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    {{ prometheus_image }}

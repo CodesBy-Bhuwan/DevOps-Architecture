@@ -1,0 +1,9 @@
+---
+- name: Stop Jenkins
+  hosts: master
+  become: yes
+
+  tasks:
+    - name: Stop Jenkins container
+      command: docker stop jenkins
+      ignore_errors: yes

@@ -1,0 +1,18 @@
+---
+- name: Remove old node_exporter container if exists
+  command: docker rm -f node_exporter
+  ignore_errors: yes
+
+- name: Run Node Exporter container
+  command: >
+    docker run -d
+    --name node_exporter
+    --restart unless-stopped
+    -p {{ node_exporter_port }}:9100
+    -v /proc:/host/proc:ro
+    -v /sys:/host/sys:ro
+    -v /:/rootfs:ro
+    {{ node_exporter_image }}
+    --path.procfs=/host/proc
+    --path.sysfs=/host/sys
+    --path.rootfs=/rootfs

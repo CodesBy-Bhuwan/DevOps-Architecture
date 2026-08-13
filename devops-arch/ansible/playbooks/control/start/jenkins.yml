@@ -1,0 +1,8 @@
+---
+- name: Start Jenkins
+  hosts: master
+  become: yes
+
+  tasks:
+    - name: Start Jenkins container
+      command: docker start jenkins

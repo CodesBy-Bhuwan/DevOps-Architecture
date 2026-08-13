@@ -1,0 +1,138 @@
+# ==========================================
+# DevOps Lab Makefile
+# ==========================================
+
+.DEFAULT_GOAL := help
+
+ANSIBLE_INVENTORY = ansible/inventory/dev.ini
+
+.PHONY: help up halt destroy provision deploy status
+
+help:
+	@echo ""
+	@echo "========== DevOps Lab =========="
+	@echo "=============================="
+	@echo "Infrastructure"
+	@echo "=============================="
+	@echo ""
+	@echo "make up"
+	@echo "make halt"
+	@echo "make destroy"
+	@echo ""
+	@echo "=============================="
+	@echo "Provisioning"
+	@echo "=============================="
+	@echo ""
+	@echo "make provision"
+	@echo "make deploy"
+	@echo ""
+	@echo "=============================="
+	@echo "Kubernetes"
+	@echo "=============================="
+	@echo ""
+	@echo "make k8s-bootstrap"
+	@echo "make k8s-status"
+	@echo "make k8s-reset"
+	@echo "make k8s-check"
+	@echo ""
+	@echo "=============================="
+	@echo "Platform"
+	@echo "=============================="
+	@echo ""
+	@echo "make start"
+	@echo "make stop"
+	@echo "make restart"
+	@echo "make status"
+	@echo ""
+	@echo "make jenkins-start"
+	@echo "make jenkins-stop"
+	@echo ""
+	@echo "make sonarqube-start"
+	@echo "make sonarqube-stop"
+	@echo ""
+	@echo "make nexus-start"
+	@echo "make nexus-stop"
+	@echo ""
+	@echo "make prometheus-start"
+	@echo "make prometheus-stop"
+	@echo ""
+	@echo "make grafana-start"
+	@echo "make grafana-stop"
+	@echo ""
+	@echo "=============================="
+	@echo "Terraform"
+	@echo "=============================="
+	@echo ""
+	@echo "make tf-local"
+	@echo "make tf-aws"
+	@echo ""
+	@echo "=============================="
+	@echo "Utilities"
+	@echo "=============================="
+	@echo ""
+	@echo "make help"
+up:
+	cd vagrant && vagrant up
+
+halt:
+	cd vagrant && vagrant halt
+
+destroy:
+	cd vagrant && vagrant destroy -f
+
+provision:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/provision.yml
+
+deploy:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/site.yml
+
+
+.PHONY: start stop restart status
+
+docker_start:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/docker.yml
+
+start:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/control/start/all.yml
+
+status:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/control/status/all.yml
+
+stop:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/control/stop/all/yml
+
+restart: stop start
+
+
+jenkins-start:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/jenkins.yml
+
+jenkins-stop:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/control/stop/jenkins.yml
+
+
+sonarqube-start:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/sonarqube.yml
+
+sonarqube-stop:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/control/stop/sonarqube.yml
+
+nexus-start:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/nexus.yml
+
+nexus-stop:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/control/stop/nexus.yml
+
+prometheus-start:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/control/start/prometheus.yml
+
+prometheus-stop:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/control/stop/prometheus.yml
+
+grafana-start:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/grafana.yml
+
+grafana-stop:
+	ansible-playbook -i $(ANSIBLE_INVENTORY) ansible/playbooks/control/stop/grafana.yml
+
+

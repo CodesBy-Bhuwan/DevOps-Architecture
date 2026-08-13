@@ -1,0 +1,11 @@
+---
+# =============================================================================
+# Bootstrap Role
+# Prepare infrastructure before provisioning
+# =============================================================================
+
+- name: Configure operating system and hostname resolution
+  ansible.builtin.import_tasks: hosts.yml
+
+- name: Configure passwordless SSH
+  ansible.builtin.import_tasks: ssh.yml

@@ -1,0 +1,33 @@
+# Vagrant
+.vagrant/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Ansible
+*.retry
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# Temporary
+*.tmp
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Kubernetes
+kubeconfig

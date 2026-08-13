@@ -1,0 +1,36 @@
+---
+- name: Create Jenkins directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: 1000
+    group: 1000
+    mode: "0755"
+  with_items:
+    - /opt/jenkins
+    - /opt/jenkins/casc  # Create the casc folder so Jenkins doesn't crash
+
+- name: Run Jenkins Container
+  community.docker.docker_container:
+    name: jenkins
+    image: jenkins/jenkins:lts-jdk21
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - /opt/jenkins:/var/jenkins_home
+    env:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+      CASC_JENKINS_CONFIG: "/var/jenkins_home/casc" # Tell Jenkins to always look here
+
+- name: Wait for Jenkins to be ready (Is it running?)
+  ansible.builtin.uri:
+    url: "http://{{ ansible_host }}:8080/login"
+    method: GET
+    status_code: [200, 403, 503]
+  register: result
+  until: result.status in [200, 403]
+  retries: 60
+  delay: 5

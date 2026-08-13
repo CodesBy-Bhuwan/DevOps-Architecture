@@ -1,0 +1,15 @@
+---
+- name: Status of ALL services
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Show running containers
+      shell: |
+        {% raw %}
+        docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+        {% endraw %}
+      register: result
+
+    - debug:
+        var: result.stdout_lines

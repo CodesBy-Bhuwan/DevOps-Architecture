@@ -1,0 +1,14 @@
+---
+- name: Copy Argo CD installation files
+  copy:
+    src: "{{ item.src }}"
+    dest: "/home/vagrant/{{ item.dest }}"
+    mode: "0755"
+  loop:
+    - src: namespace.yaml
+      dest: namespace.yaml
+    - src: install.sh
+      dest: install.sh
+
+- name: Install Argo CD
+  command: /home/vagrant/install.sh

@@ -1,0 +1,21 @@
+---
+- name: Create Grafana data directory
+  file:
+    path: /opt/grafana
+    state: directory
+    mode: "0755"
+
+- name: Remove old Grafana container
+  command: docker rm -f grafana
+  ignore_errors: yes
+
+- name: Run Grafana container
+  command: >
+    docker run -d
+    --name grafana
+    --restart unless-stopped
+    -p {{ grafana_port }}:3000
+    -e GF_SECURITY_ADMIN_USER={{ grafana_admin_user }}
+    -e GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password }}
+    -v grafana_data:/var/lib/grafana
+    {{ grafana_image }}

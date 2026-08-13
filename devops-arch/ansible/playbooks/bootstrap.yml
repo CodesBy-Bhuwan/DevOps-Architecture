@@ -1,0 +1,7 @@
+---
+- name: Bootstrap Infrastructure
+  hosts: all
+  become: true
+
+  roles:
+    - bootstrap

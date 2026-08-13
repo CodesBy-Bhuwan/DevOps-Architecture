@@ -1,0 +1,36 @@
+---
+- name: Create Jenkins directory
+  ansible.builtin.file:
+    path: /opt/jenkins
+    state: directory
+    mode: "0755"
+
+- name: Create Jenkins CASC directory
+  ansible.builtin.file:
+    path: /opt/jenkins/casc
+    state: directory
+
+- name: Create Jenkins jobs directory
+  ansible.builtin.file:
+    path: /opt/jenkins/jobs
+    state: directory
+
+- name: Copy docker-compose
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../docker/jenkins/docker-compose.yml"
+    dest: /opt/jenkins/docker-compose.yml
+
+- name: Copy plugins list
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../jenkins/plugins.txt"
+    dest: /opt/jenkins/plugins.txt
+
+- name: Copy Jenkins Configuration as Code
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../jenkins/casc/jenkins.yml"
+    dest: /opt/jenkins/casc/jenkins.yml
+
+- name: Copy Job DSL
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../jenkins/jobs/"
+    dest: /opt/jenkins/jobs/

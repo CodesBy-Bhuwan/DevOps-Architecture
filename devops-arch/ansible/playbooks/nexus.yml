@@ -1,0 +1,7 @@
+---
+- name: Deploy Nexus
+  hosts: monitoring-node
+  become: yes
+
+  roles:
+    - nexus

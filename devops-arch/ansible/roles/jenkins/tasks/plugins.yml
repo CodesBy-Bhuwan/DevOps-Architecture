@@ -1,0 +1,27 @@
+#################################################################
+---
+- name: Copy plugins list to host
+  ansible.builtin.copy:
+    src: plugins.txt
+    dest: /tmp/plugins.txt
+
+- name: Copy plugins list into container
+  ansible.builtin.command: docker cp /tmp/plugins.txt jenkins:/tmp/plugins.txt
+  changed_when: false
+
+- name: Install plugins via CLI
+  ansible.builtin.command: docker exec jenkins jenkins-plugin-cli --plugin-file /tmp/plugins.txt
+  changed_when: false
+
+- name: Restart Jenkins to load plugins
+  ansible.builtin.command: docker restart jenkins
+  changed_when: false
+
+- name: Wait for Jenkins to be ready again
+  ansible.builtin.uri:
+    url: "http://{{ ansible_host }}:8080/login"
+    status_code: [200, 403]
+  register: result
+  until: result.status in [200, 403]
+  retries: 60
+  delay: 5

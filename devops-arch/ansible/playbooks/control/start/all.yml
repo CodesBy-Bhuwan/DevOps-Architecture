@@ -1,0 +1,6 @@
+---
+- import_playbook: jenkins.yml
+- import_playbook: sonarqube.yml
+- import_playbook: prometheus.yml
+- import_playbook: grafana.yml
+- import_playbook: nexus.yml

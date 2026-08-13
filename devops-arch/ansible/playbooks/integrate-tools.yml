@@ -1,0 +1,126 @@
+---
+- name: Integrate Jenkins, Nexus, and SonarQube
+  hosts: control-node
+  become: yes
+  tasks:
+    # ==========================================
+    # NEXUS CONFIGURATION (Delegated to Monitoring Node)
+    # ==========================================
+    - name: Fetch Nexus initial UUID password
+      ansible.builtin.command: docker exec nexus cat /nexus-data/admin.password
+      register: nexus_initial_password
+      delegate_to: monitoring-node
+      changed_when: false
+      tags: nexus
+      #no_log: true
+
+    - name: Change Nexus admin password to admin123
+      uri:
+        url: "http://{{ hostvars['monitoring-node']['ansible_host'] }}:8081/service/rest/v1/security/users/admin/change-password"
+        method: PUT
+        user: "admin"
+        password: "{{ nexus_initial_password.stdout }}"
+        headers:
+          Content-Type: "text/plain"
+        body: "admin123"
+        status_code: [200, 204, 400]
+      delegate_to: monitoring-node
+      changed_when: false
+      tags: nexus
+      #no_log: true
+
+    - name: Create Docker Hosted Repository in Nexus
+      uri:
+        url: "http://{{ hostvars['monitoring-node']['ansible_host'] }}:8081/service/rest/v1/repositories/docker/hosted"
+        method: POST
+        user: "admin"
+        password: "admin123"
+        body_format: json
+        body: |
+          {
+            "name": "docker-hosted", "online": true,
+            "storage": {"blobStoreName": "default", "strictContentTypeValidation": false},
+            "docker": {"v1Enabled": false, "forceBasicAuth": true, "httpPort": 8082}
+          }
+        status_code: [201, 400]
+      delegate_to: monitoring-node
+      changed_when: false
+      tags: nexus
+
+    - name: Create Jenkins Service Account in Nexus
+      uri:
+        url: "http://{{ hostvars['monitoring-node']['ansible_host'] }}:8081/service/rest/v1/security/users"
+        method: POST
+        user: "admin"
+        password: "admin123"
+        body_format: json
+        body: |
+          {
+            "userId": "jenkins-ci", "firstName": "Jenkins", "lastName": "CI",
+            "emailAddress": "jenkins@ci.com", "status": "active",
+            "roles": ["nx-admin"]
+          }
+        status_code: [200, 201, 400]
+      delegate_to: monitoring-node
+      changed_when: false
+      tags: nexus
+
+    # ==========================================
+    # SONARQUBE CONFIGURATION (Delegated to Control Node)
+    # ==========================================
+    - name: Create Dev user in SonarQube
+      uri:
+        url: "http://{{ ansible_host }}:9000/api/users/create"
+        method: POST
+        user: "admin"
+        password: "admin"
+        force_basic_auth: yes
+        body_format: form-urlencoded
+        body:
+          login: "dev"
+          name: "Developer"
+          password: "developer123"
+        status_code: [200, 201, 400]
+      delegate_to: control-node
+      changed_when: false
+      tags: sonar
+
+    - name: Create Tester user in SonarQube
+      uri:
+        url: "http://{{ ansible_host }}:9000/api/users/create"
+        method: POST
+        user: "admin"
+        password: "admin"
+        force_basic_auth: yes
+        body_format: form-urlencoded
+        body:
+          login: "tester"
+          name: "Tester"
+          password: "tester123"
+        status_code: [200, 201, 400]
+      delegate_to: control-node
+      changed_when: false
+      tags: sonar
+
+    # ==========================================
+    # JENKINS CONFIGURATION (Runs on Jenkins Host)
+    # ==========================================
+    - name: Render JCasC configuration
+      ansible.builtin.template:
+        src: ../roles/jenkins/templates/jenkins.yml.j2
+        dest: /opt/jenkins/casc/jenkins.yml
+      tags: jenkins
+
+    - name: Restart Jenkins to apply JCasC
+      ansible.builtin.command: docker restart jenkins
+      changed_when: false
+      tags: jenkins
+
+    - name: Wait for Jenkins to be ready
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}:8080/login"
+        status_code: [200, 403]
+      register: result
+      until: result.status in [200, 403]
+      retries: 60
+      delay: 5

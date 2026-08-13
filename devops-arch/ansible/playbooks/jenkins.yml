@@ -1,0 +1,6 @@
+---
+- name: Deploy Jenkins
+  hosts: control-node
+  become: yes
+  roles:
+    - jenkins

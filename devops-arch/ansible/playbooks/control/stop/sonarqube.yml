@@ -1,0 +1,9 @@
+---
+- name: Stop SonarQube
+  hosts: master
+  become: yes
+
+  tasks:
+    - name: Stop SonarQube container
+      command: docker stop sonarqube
+      ignore_errors: yes

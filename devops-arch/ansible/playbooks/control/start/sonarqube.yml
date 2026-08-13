@@ -1,0 +1,9 @@
+---
+- name: Start SonarQube
+  hosts: master
+  become: yes
+
+  tasks:
+    - name: Start SonarQube container
+      command: docker start sonarqube
+      ignore_errors: yes

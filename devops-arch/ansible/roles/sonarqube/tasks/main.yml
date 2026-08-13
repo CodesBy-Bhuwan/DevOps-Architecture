@@ -1,0 +1,20 @@
+---
+- name: Set vm.max_map_count for Elasticsearch (Sonar requirement)
+  sysctl:
+    name: vm.max_map_count
+    value: 262144
+    state: present
+    reload: yes
+- name: Remove old SonarQube container if exists
+  command: docker rm -f sonarqube
+  ignore_errors: yes
+
+- name: Run SonarQube container
+  command: >
+    docker run -d
+    --name sonarqube
+    --restart unless-stopped
+    -p 9000:9000
+    -e "SONAR_ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    -e "SONAR_WEB_JAVA_OPTS=-Xmx512m"
+    sonarqube:9.9-community

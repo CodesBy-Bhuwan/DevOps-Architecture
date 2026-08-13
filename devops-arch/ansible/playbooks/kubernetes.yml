@@ -1,0 +1,14 @@
+---
+- name: Install Kubernetes Prerequisites
+  hosts: k8s_master
+  become: yes
+
+  roles:
+    - kubernetes
+
+- name: Install KUbernetes Workers
+  hosts: k8s_workers
+  become: yes
+
+  roles:
+    - kubernetes

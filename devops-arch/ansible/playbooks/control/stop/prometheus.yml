@@ -1,0 +1,9 @@
+---
+- name: Stop Prometheus
+  hosts: worker2
+  become: yes
+
+  tasks:
+    - name: Stop Prometheus container
+      command: docker stop prometheus
+      ignore_errors: yes

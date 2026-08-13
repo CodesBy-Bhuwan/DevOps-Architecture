@@ -1,0 +1,8 @@
+---
+- name: Start Grafana
+  hosts: worker2
+  become: yes
+
+  tasks:
+    - name: Start Grafana container
+      command: docker start grafana

@@ -1,0 +1,8 @@
+---
+- name: Stop Nexus
+  hosts: master
+  become: yes
+
+  tasks:
+    - command: docker stop nexus
+      ignore_errors: yes
