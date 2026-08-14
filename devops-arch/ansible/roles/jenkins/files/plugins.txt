@@ -4,3 +4,4 @@ credentials
 workflow-aggregator
 git
 sonar
+prometheus

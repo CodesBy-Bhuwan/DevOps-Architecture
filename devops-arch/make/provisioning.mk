@@ -36,6 +36,9 @@ integrate-all:
 nexus:
 	$(ANSIBLE) $(PLAYBOOK)/nexus.yml
 
+node-export:
+	$(ANSIBLE) $(PLAYBOOK)/monitoring.yml
+
 prometheus:
 	$(ANSIBLE) $(PLAYBOOK)/prometheus.yml
 

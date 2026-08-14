@@ -19,7 +19,8 @@
         url: "http://{{ hostvars['monitoring-node']['ansible_host'] }}:8081/service/rest/v1/security/users/admin/change-password"
         method: PUT
         user: "admin"
-        password: "{{ nexus_initial_password.stdout }}"
+        password: "{{ nexus_initial_password.stdout | trim }}"
+        force_basic_auth: yes
         headers:
           Content-Type: "text/plain"
         body: "admin123"

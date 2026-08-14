@@ -1,0 +1,43 @@
+global:
+  scrape_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - "localhost:9093" # AlertManager runs on the same server
+
+rule_files:
+  - "alert_rules.yml" # We will create this next
+
+scrape_configs:
+  # 1. Prometheus monitors itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # 2. Monitor all EC2 hardware (Node Exporter)
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets:
+          {% for host in groups['all'] %}
+          - '{{ hostvars[host]['ansible_host'] }}:9100'
+          {% endfor %}
+
+  # 3. Monitor Jenkins
+  - job_name: 'jenkins'
+    metrics_path: '/prometheus/'
+    static_configs:
+      - targets:
+          {% for host in groups['jenkins'] %}
+          - '{{ hostvars[host]['ansible_host'] }}:8080'
+          {% endfor %}
+
+  # 4. Monitor SonarQube
+  - job_name: 'sonarqube'
+    metrics_path: '/api/monitoring/metrics'
+    static_configs:
+      - targets:
+          {% for host in groups['sonarqube'] %}
+          - '{{ hostvars[host]['ansible_host'] }}:9000'
+          {% endfor %}

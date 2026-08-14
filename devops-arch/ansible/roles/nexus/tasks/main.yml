@@ -16,11 +16,10 @@
     --restart unless-stopped
     -p 8081:8081
     -p 8082:8082
-    -p 8083:8083
-    -v /opt/nexus-data:/nexus-data
+    -e "SONAR_ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    -e "SONAR_WEB_JAVA_OPTS=-Xmx512m"
     -e "NEXUS_SECURITY_RANDOM_PASSWORD=false"
     sonatype/nexus3:3.79.0
-
 - name: Wait for Nexus to be ready
   uri:
     url: "http://{{ ansible_host }}:8081/service/rest/v1/status"

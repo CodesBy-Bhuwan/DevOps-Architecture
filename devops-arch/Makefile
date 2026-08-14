@@ -51,6 +51,8 @@ help:
 	@echo "  make nexus"
 	@echo "  make stop-nexus"
 	@echo ""
+	@echo "  make node-export"
+	@echo ""
 	@echo "  make prometheus"
 	@echo "  make stop-prometheus"
 	@echo ""
