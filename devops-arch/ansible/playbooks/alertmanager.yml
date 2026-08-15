@@ -1,0 +1,12 @@
+---
+- name: Setup AlertManager on monitoring node
+  hosts: monitoring_ops
+  become: yes
+  vars:
+    alert_receiver_email: "{{ lookup('env', 'ALERT_EMAIL') | default('team@example.com') }}"
+    smtp_host: "{{ lookup('env', 'SMTP_HOST') | default('smtp.gmail.com') }}"
+    smtp_port: "{{ lookup('env', 'SMTP_PORT') | default(587) }}"
+    smtp_auth_username: "{{ lookup('env', 'SMTP_AUTH_USERNAME') | default('') }}"
+    smtp_auth_password: "{{ lookup('env', 'SMTP_AUTH_PASSWORD') | default('') }}"
+  roles:
+    - alertmanager

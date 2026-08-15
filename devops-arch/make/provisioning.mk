@@ -47,3 +47,23 @@ grafana:
 
 argocd:
 	$(ANSIBLE) $(PLAYBOOK)/argocd.yml
+
+loki:
+	$(ANSIBLE) $(PLAYBOOK)/loki.yml
+
+alloy:
+	$(ANSIBLE) $(PLAYBOOK)/alloy.yml
+
+promtail:
+	$(ANSIBLE) $(PLAYBOOK)/promtail.yml
+
+# Install all monitoring tools (Loki + Alloy on all nodes)
+monitoring-tools:
+	$(ANSIBLE) $(PLAYBOOK)/loki.yml
+	$(ANSIBLE) $(PLAYBOOK)/alloy.yml
+
+stop-loki:
+	$(ANSIBLE) $(PLAYBOOK)/control/stop/loki.yml
+
+stop-alloy:
+	$(ANSIBLE) $(PLAYBOOK)/control/stop/alloy.yml

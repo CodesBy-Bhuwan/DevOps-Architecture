@@ -1,0 +1,4 @@
+---
+alloy_version: 1.0.0
+alloy_port: 12345
+loki_url: "http://{{ hostvars[groups['monitoring_ops'][0]].ansible_host }}:3100"

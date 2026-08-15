@@ -1,0 +1,13 @@
+alertmanager_version: "0.27.0"
+alertmanager_user: "prometheus"
+alertmanager_group: "prometheus"
+alertmanager_port: 9093
+smtp_host: "{{ smtp_host | default('smtp.gmail.com') }}"
+smtp_port: "{{ smtp_port | default(587) }}"
+smtp_from: "{{ smtp_from | default('alertmanager@example.com') }}"
+smtp_auth_username: "{{ smtp_auth_username | default('') }}"
+smtp_auth_password: "{{ smtp_auth_password | default('') }}"
+alertmanager_receivers:
+  - name: "email"
+    email_configs:
+      - to: "{{ alert_receiver_email | default('team@example.com') }}"

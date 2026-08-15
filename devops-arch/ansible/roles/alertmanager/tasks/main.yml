@@ -1,0 +1,108 @@
+---
+- name: Create alertmanager group
+  group:
+    name: "{{ alertmanager_group }}"
+    state: present
+
+- name: Create alertmanager user
+  user:
+    name: "{{ alertmanager_user }}"
+    group: "{{ alertmanager_group }}"
+    system: yes
+    createhome: no
+    shell: /bin/false
+
+- name: Download AlertManager binary
+  get_url:
+    url: "https://github.com/prometheus/alertmanager/releases/download/v{{ alertmanager_version }}/alertmanager-{{ alertmanager_version }}.linux-amd64.tar.gz"
+    dest: /tmp/alertmanager.tar.gz
+
+- name: Extract AlertManager
+  unarchive:
+    src: /tmp/alertmanager.tar.gz
+    dest: /tmp/
+    remote_src: yes
+    creates: /tmp/alertmanager-{{ alertmanager_version }}.linux-amd64/alertmanager
+
+- name: Install AlertManager binary
+  copy:
+    src: "/tmp/alertmanager-{{ alertmanager_version }}.linux-amd64/alertmanager"
+    dest: /usr/local/bin/alertmanager
+    mode: 0755
+    remote_src: yes
+
+- name: Create AlertManager config directory
+  file:
+    path: /etc/alertmanager
+    state: directory
+    owner: "{{ alertmanager_user }}"
+    group: "{{ alertmanager_group }}"
+
+- name: Create AlertManager data directory
+  file:
+    path: /var/lib/alertmanager
+    state: directory
+    owner: "{{ alertmanager_user }}"
+    group: "{{ alertmanager_group }}"
+
+- name: Deploy AlertManager config
+  template:
+    src: alertmanager.yml.j2
+    dest: /etc/alertmanager/alertmanager.yml
+    owner: "{{ alertmanager_user }}"
+    group: "{{ alertmanager_group }}"
+    mode: 0644
+  notify: restart alertmanager
+
+- name: Deploy alert rules
+  template:
+    src: alerts.yml.j2
+    dest: /etc/prometheus/alerts.yml
+    owner: prometheus
+    group: prometheus
+    mode: 0644
+  notify: restart prometheus
+
+- name: Create AlertManager systemd service
+  template:
+    src: alertmanager.service.j2
+    dest: /etc/systemd/system/alertmanager.service
+    mode: 0644
+  notify: restart alertmanager
+
+- name: Enable and start AlertManager
+  systemd:
+    name: alertmanager
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: Open AlertManager port
+  ufw:
+    rule: allow
+    port: "{{ alertmanager_port }}"
+    proto: tcp
+
+- name: Cleanup
+  file:
+    path: /tmp/alertmanager.tar.gz
+    state: absent
+  file:
+    path: "/tmp/alertmanager-{{ alertmanager_version }}.linux-amd64"
+    state: absent
+
+- name: Restart Prometheus to load new config
+  systemd:
+    name: prometheus
+    state: restarted
+
+handlers:
+  - name: restart alertmanager
+    systemd:
+      name: alertmanager
+      state: restarted
+
+  - name: restart prometheus
+    systemd:
+      name: prometheus
+      state: restarted
