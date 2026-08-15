@@ -1,0 +1,16 @@
+[Unit]
+Description=Grafana Alloy
+After=network.target docker.service
+Wants=network.target docker.service
+
+[Service]
+User=alloy
+Group=alloy
+ExecStart=/usr/local/bin/alloy run /etc/alloy/alloy-config.yml \
+  --server.http.listen-addr=0.0.0.0:{{ alloy_port }}
+Restart=always
+RestartSec=10
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

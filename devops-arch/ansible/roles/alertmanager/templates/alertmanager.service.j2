@@ -1,0 +1,16 @@
+[Unit]
+Description=AlertManager
+After=network.target
+
+[Service]
+User={{ alertmanager_user }}
+Group={{ alertmanager_group }}
+ExecStart=/usr/local/bin/alertmanager \
+  --config.file=/etc/alertmanager/alertmanager.yml \
+  --storage.path=/var/lib/alertmanager \
+  --web.listen-address=:{{ alertmanager_port }}
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

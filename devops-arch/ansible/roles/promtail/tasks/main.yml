@@ -1,0 +1,65 @@
+---
+- name: Create promtail group
+  group:
+    name: promtail
+    state: present
+
+- name: Create promtail user
+  user:
+    name: promtail
+    group: promtail
+    system: yes
+    createhome: no
+    shell: /bin/false
+
+- name: Download Promtail binary
+  get_url:
+    url: "https://github.com/grafana/loki/releases/download/v2.9.4/promtail-linux-amd64.zip"
+    dest: /tmp/promtail.zip
+
+- name: Unzip Promtail binary
+  unarchive:
+    src: /tmp/promtail.zip
+    dest: /usr/local/bin/
+    remote_src: yes
+    creates: /usr/local/bin/promtail-linux-amd64
+    owner: promtail
+    group: promtail
+
+- name: Rename Promtail binary
+  command: mv /usr/local/bin/promtail-linux-amd64 /usr/local/bin/promtail
+  args:
+    creates: /usr/local/bin/promtail
+
+- name: Create Promtail config directory
+  file:
+    path: /etc/promtail
+    state: directory
+    owner: promtail
+    group: promtail
+
+- name: Deploy Promtail config
+  template:
+    src: promtail.yml.j2
+    dest: /etc/promtail/promtail.yml
+    owner: promtail
+    group: promtail
+    mode: 0644
+
+- name: Deploy Promtail systemd service
+  template:
+    src: promtail.service.j2
+    dest: /etc/systemd/system/promtail.service
+    mode: 0644
+
+- name: Enable and start Promtail
+  systemd:
+    name: promtail
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: Cleanup
+  file:
+    path: /tmp/promtail.zip
+    state: absent

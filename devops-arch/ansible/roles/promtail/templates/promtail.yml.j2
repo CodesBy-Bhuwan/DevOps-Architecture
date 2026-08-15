@@ -1,0 +1,45 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://{{ hostvars['monitoring_ops']['ansible_host'] }}:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: docker_logs
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 15s
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        target_label: 'container'
+      - source_labels: ['__meta_docker_container_log_stream']
+        target_label: 'logstream'
+      - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
+        target_label: 'service'
+      - source_labels: ['__meta_docker_container_label_com_docker_compose_project']
+        target_label: 'project'
+      - source_labels: ['__meta_docker_container_id']
+        target_label: 'container_id'
+      - source_labels: ['__meta_docker_container_image']
+        target_label: 'image'
+
+  - job_name: system_logs
+    static_configs:
+      - targets: ['localhost']
+        labels:
+          job: syslog
+          __path__: /var/log/syslog
+
+  - job_name: journald
+    journald_config:
+      path: /var/log/journal
+    relabel_configs:
+      - source_labels: ['__journald__systemd_unit']
+        target_label: 'unit'
+      - source_labels: ['__journald__hostname']
+        target_label: 'hostname'

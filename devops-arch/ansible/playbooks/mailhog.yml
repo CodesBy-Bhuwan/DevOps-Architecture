@@ -1,0 +1,21 @@
+---
+- name: Setup MailHog for email testing
+  hosts: monitoring_ops
+  become: yes
+  tasks:
+    - name: Run MailHog container
+      docker_container:
+        name: mailhog
+        image: mailhog/mailhog:latest
+        ports:
+          - "1025:1025"  # SMTP
+          - "8025:8025"  # Web UI
+        restart_policy: always
+        state: started
+
+    - name: Display MailHog access
+      debug:
+        msg: |
+          📧 MailHog is running!
+          - SMTP: {{ ansible_host }}:1025
+          - Web UI: http://{{ ansible_host }}:8025

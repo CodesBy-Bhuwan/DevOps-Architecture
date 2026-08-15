@@ -1,0 +1,47 @@
+---
+- name: Test AlertManager by temporarily stopping node_exporter
+  hosts: k8s_workers[0]  # First worker
+  become: yes
+  tasks:
+    - name: Stop node_exporter to trigger alert
+      systemd:
+        name: node_exporter
+        state: stopped
+      register: stop_result
+
+    - name: Wait for alert to be triggered
+      wait_for:
+        timeout: 30
+      when: stop_result.changed
+
+    - name: Display alert information
+      debug:
+        msg: |
+          🔔 Alert triggered!
+          Check your email at: {{ lookup('env', 'ALERT_EMAIL') | default('team@example.com') }}
+          Check AlertManager: http://{{ hostvars['monitoring_ops'].ansible_host }}:9093
+          You should see the NodeDown alert.
+
+    - name: Wait for email to be sent
+      wait_for:
+        timeout: 60
+      when: stop_result.changed
+
+    - name: Start node_exporter again (to send resolved alert)
+      systemd:
+        name: node_exporter
+        state: started
+      when: stop_result.changed
+
+    - name: Final message
+      debug:
+        msg: |
+          ✅ Test complete!
+          Check your email - you should have received:
+          1. Alert notification (NodeDown)
+          2. Resolved notification (NodeUp)
+          
+          If you don't see emails, check:
+          - Spam folder
+          - AlertManager logs: docker logs alertmanager
+          - SMTP configuration in /etc/alertmanager/alertmanager.yml

@@ -1,0 +1,5 @@
+---
+loki_image: grafana/loki:3.0.0
+loki_port: 3100
+loki_config_dir: /etc/loki
+loki_data_dir: /data/loki
