@@ -1,0 +1,6 @@
+---
+- name: Deploy Promtail
+  hosts: control_plane:monitoring_ops
+  become: yes
+  roles:
+    - promtail

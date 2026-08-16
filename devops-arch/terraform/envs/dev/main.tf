@@ -48,27 +48,27 @@ resource "local_file" "ansible_inventory" {
   content = <<-EOF
 # --- DevOps Tools ---
 [jenkins]
- ${module.compute.control_plane_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+control-node ansible_host=${module.compute.control_plane_public_ip} private_ip=${module.compute.control_plane_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
 
 [sonarqube]
- ${module.compute.control_plane_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+control-node ansible_host=${module.compute.control_plane_public_ip} private_ip=${module.compute.control_plane_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
 
 [nexus]
- ${module.compute.monitoring_ops_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+monitoring-node ansible_host=${module.compute.monitoring_ops_public_ip} private_ip=${module.compute.monitoring_ops_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
 
 [prometheus]
- ${module.compute.monitoring_ops_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+monitoring-node ansible_host=${module.compute.monitoring_ops_public_ip} private_ip=${module.compute.monitoring_ops_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
 
 [grafana]
- ${module.compute.monitoring_ops_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+monitoring-node ansible_host=${module.compute.monitoring_ops_public_ip} private_ip=${module.compute.monitoring_ops_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
 
 # --- Kubernetes ---
 [k8s_master]
- ${module.compute.k8s_master_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+k8s-master ansible_host=${module.compute.k8s_master_public_ip} private_ip=${module.compute.k8s_master_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
 
 [k8s_workers]
-%{ for ip in module.compute.k8s_workers_public_ips ~}
- ${ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+%{ for i, ip in module.compute.k8s_workers_public_ips ~}
+k8s-worker-${i + 1} ansible_host=${ip} private_ip=${module.compute.k8s_workers_private_ips[i]} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
 %{ endfor ~}
   EOF
 }

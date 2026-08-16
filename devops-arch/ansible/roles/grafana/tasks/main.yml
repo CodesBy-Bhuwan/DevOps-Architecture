@@ -1,9 +1,12 @@
 ---
-- name: Create Grafana data directory
+- name: Create Grafana directories
   file:
-    path: /opt/grafana
+    path: "{{ item }}"
     state: directory
     mode: "0755"
+  with_items:
+    - /opt/grafana
+    - /opt/grafana/provisioning/datasources
 
 - name: Remove old Grafana container
   command: docker rm -f grafana
@@ -18,4 +21,5 @@
     -e GF_SECURITY_ADMIN_USER={{ grafana_admin_user }}
     -e GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password }}
     -v grafana_data:/var/lib/grafana
+    -v /opt/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     {{ grafana_image }}

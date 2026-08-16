@@ -1,0 +1,25 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  # We use Ansible variables to dynamically find the Monitoring server's IP
+  - url: http://{{ hostvars[groups['monitoring_ops'][0]]['ansible_host'] }}:3100/loki/api/v1/push
+
+scrape_configs:
+  # This magic block tells Promtail to talk to Docker and grab ALL container logs automatically!
+  - job_name: docker_logs
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+        filters:
+          - name: name
+            values: ["*"]
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        target_label: 'container_name'
+      - source_labels: ['__meta_docker_container_log_stream']
+        target_label: 'log_stream'
