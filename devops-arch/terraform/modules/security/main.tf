@@ -32,6 +32,12 @@ resource "aws_security_group" "control_plane" {
     from_port   = 9100
     to_port     = 9100
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 9100
+    to_port     = 9100
+    protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/16"] # Only allow VPC internal traffic
   }
     ingress {
@@ -137,6 +143,12 @@ resource "aws_security_group" "monitoring" {
   ingress {
     from_port   = 3100
     to_port     = 3100
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 9100
+    to_port     = 9100
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
