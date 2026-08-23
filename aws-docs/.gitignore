@@ -774,6 +774,3 @@ runtime/
 
 # Terraform lock file should be tracked
 !.terraform.lock.hcl
-#aws-docs/
-#aws-docs/*
-
