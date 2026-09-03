@@ -20,3 +20,7 @@ We combined Node Exporter metrics with a pre-built Grafana dashboard (ID 1860) t
 ## Why It Is Better Than Other Tools
 - **vs. Telegraf:** Telegraf is powerful but plugin-heavy and requires a configuration file. Node Exporter is purpose-built for Prometheus, lightweight, and requires almost zero configuration to start gathering critical system metrics.
 - **vs. CloudWatch Agent:** CloudWatch agent sends data to AWS, incurring costs and requiring IAM roles. Node Exporter is free, self-hosted, and keeps data within our private VPC.
+
+
+
+[**Back to Previous Page**](../../../README.md)

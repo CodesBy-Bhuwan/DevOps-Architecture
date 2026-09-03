@@ -24,3 +24,6 @@ Jenkins uses the `nexus-creds` credential to log into the Nexus Docker registry,
 ## Why It Is Better Than Other Tools
 - **vs. GitLab CI/GitHub Actions:** While those are excellent SaaS-first tools, Jenkins offers unmatched on-premises/VPC control. It doesn't lock you into a specific cloud provider's ecosystem and allows for deep, custom plugin integrations that SaaS platforms restrict.
 - **vs. Bamboo/TeamCity:** Jenkins is 100% free and open-source, with a community far larger than any competitor, meaning solutions to any problem are readily available.
+
+
+[**Back to Previous Page**](../../../README.md)

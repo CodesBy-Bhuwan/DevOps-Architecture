@@ -21,3 +21,7 @@ Used Docker multi-stage builds for our MERN application, compiling the React fro
 ## Why It Is Better Than Other Tools
 - **vs. Virtual Machines (Vagrant):** While Vagrant is great for simulating full OS environments, Docker containers are immutable, use a fraction of the disk space, and can be easily orchestrated at scale.
 - **vs. Podman/Containerd:** Docker remains the industry standard with the most extensive ecosystem (Docker Compose, Docker Hub) and the most seamless integration with CI/CD tools like Jenkins.
+
+
+
+[**Back to Previous Page**](../../../README.md)

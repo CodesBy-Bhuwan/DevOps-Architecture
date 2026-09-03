@@ -24,3 +24,6 @@ We configured the Jenkins EC2 instance's Docker daemon (`/etc/docker/daemon.json
 ## Why It Is Better Than Other Tools
 - **vs. Docker Hub / ECR:** Nexus is format-agnostic. ECR only handles Docker images, but Nexus can also serve as a private npm registry for the React frontend or a Maven repo for Java.
 - **vs. JFrog Artifactory:** Artifactory is excellent but highly expensive and resource-heavy. Nexus OSS provides 90% of the functionality for free, with a much smaller memory footprint, making it ideal for a mid-sized EC2 instance.
+
+
+[**Back to Previous Page**](../../../README.md)

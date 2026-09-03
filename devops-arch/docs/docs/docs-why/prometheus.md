@@ -21,3 +21,7 @@ We configured the `prometheus.yml.j2` template to use `private_ip` variables ins
 ## Why It Is Better Than Other Tools
 - **vs. CloudWatch:** CloudWatch is locked to AWS and incurs costs for custom metrics. Prometheus is free, open-source, and works across any cloud or on-prem infrastructure.
 - **vs. InfluxDB:** Prometheus has built-in alerting (AlertManager) and is deeply integrated with Grafana out of the box, making it superior for comprehensive observability.
+
+
+
+[**Back to Previous Page**](../../../README.md)

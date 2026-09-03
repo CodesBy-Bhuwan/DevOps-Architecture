@@ -18,3 +18,7 @@ We used Grafana's "Explore" tab to query Loki for live container logs, correlati
 ## Why It Is Better Than Other Tools
 - **vs. Kibana:** Kibana is heavily tied to the Elastic Stack and is primarily a log visualization tool. Grafana is agnostic and excels at time-series metrics (Prometheus) while still supporting logs (Loki).
 - **vs. Tableau:** Grafana is open-source, built for DevOps/infrastructure monitoring, and integrates natively with cloud-native databases.
+
+
+
+[**Back to Previous Page**](../../../README.md)

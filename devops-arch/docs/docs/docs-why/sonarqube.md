@@ -21,3 +21,7 @@ Jenkins was configured (via JCasC) to recognize the SonarQube server. When a pip
 ## Why It Is Better Than Other Tools
 - **vs. SonarCloud:** SonarCloud requires sending source code to an external SaaS. SonarQube keeps all intellectual property and code analysis strictly inside our private AWS VPC, which is mandatory for enterprise compliance.
 - **vs. ESLint/Checkstyle:** While linters are great for immediate feedback, they only run locally. SonarQube provides a centralized, historical dashboard of technical debt across the entire engineering organization, enforcing team-wide standards.
+
+
+
+[**Back to Previous Page**](../../../README.md)

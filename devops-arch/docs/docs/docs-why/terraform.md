@@ -24,3 +24,7 @@ We utilized the `terraform destroy / apply` loop to tear down all AWS resources 
 ## Why It Is Better Than Other Tools
 - **vs. AWS CloudFormation:** Terraform is cloud-agnostic and uses a much cleaner, easier-to-read syntax (HCL) compared to CloudFormation's verbose JSON/YAML.
 - **vs. Ansible for Provisioning:** While Ansible can provision infrastructure, Terraform is strictly declarative. If someone manually deletes an EC2 instance, Terraform will detect the drift and rebuild it automatically.
+
+
+
+[**Back to Previous Page**](../../../README.md)

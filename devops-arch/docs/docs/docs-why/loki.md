@@ -18,3 +18,6 @@ We had to explicitly set the `/opt/loki` directory ownership to UID `10001` in o
 ## Why It Is Better Than Other Tools
 - **vs. Elasticsearch/ELK Stack:** The ELK stack requires massive amounts of RAM and CPU to index full-text logs. Loki uses a fraction of the resources because it only indexes labels, making it perfect for a single `t3.medium` EC2 instance.
 - **vs. CloudWatch Logs:** CloudWatch requires agents and incurs ingestion costs. Loki is free, self-hosted, and highly performant.
+
+
+[**Back to Previous Page**](../../../README.md)

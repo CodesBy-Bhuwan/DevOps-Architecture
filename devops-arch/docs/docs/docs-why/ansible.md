@@ -21,3 +21,6 @@ We used the `template` module to dynamically inject AWS Private IPs into `promet
 ## Why It Is Better Than Other Tools
 - **vs. Chef/Puppet:** Chef and Puppet require a master server and client agents installed on every node. Ansible's push-based, agentless SSH model is much simpler to set up and debug.
 - **vs. Bash Scripting:** Bash scripts are procedural and hard to maintain across different OS versions. Ansible abstracts the underlying OS commands into readable, idempotent modules.
+
+
+[**Back to Previous Page**](../../../README.md)

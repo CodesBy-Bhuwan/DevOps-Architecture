@@ -20,3 +20,7 @@ We used `--network host` to ensure Promtail could reliably communicate with loca
 ## Why It Is Better Than Other Tools
 - **vs. Fluentd/Fluent Bit:** Fluentd requires complex configuration files to parse and route logs. Promtail is simpler, relies on labels (just like Prometheus), and is the official agent for Loki.
 - **vs. Logstash:** Logstash is heavy (Java-based) and resource-intensive. Promtail is written in Go, uses minimal RAM, and is designed specifically for cloud-native architectures.
+
+
+
+[**Back to Previous Page**](../../../README.md)
