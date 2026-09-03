@@ -117,15 +117,15 @@ The platform depends on the following tools. Click any tool name to open its det
 
 | Tool | Version | Server | Purpose | Documentation |
 |---|---|---|---|---|
-| [**Docker**]() | Latest | All | Container runtime | [**Setup →**]() |
-| [**Jenkins**]() | LTS (JDK 21) | `control-node` | CI/CD server | [**Setup →**]() |
-| [**SonarQube**]() | 9.9 | `control-node` | Static code analysis | [**Setup →**]() |
-| [**Nexus**]() | 3.79.0 | `control-node` | Artifact & Docker registry | [**Setup →**]() |
-| [**Prometheus**]() | Latest | `monitoring-node` | Metrics collection | [**Setup →**]() |
-| [**Grafana**]() | Latest | `monitoring-node` | Dashboards & visualization | [**Setup →**]() |
-| [**Loki**]() | Latest | `monitoring-node` | Log aggregation | [**Setup →**]() |
-| [**Promtail**]() | Latest | `monitoring-node` | Log collection & shipping | [**Setup →**]() |
-| [**Node Exporter**]() | Latest | All | Host-level metrics | [**Setup →**]() |
+| [**Docker**](./docs/docs/docs-why/docker.md) | Latest | All | Container runtime | [**Setup →**]() |
+| [**Jenkins**](./docs/docs/docs-why/jenkins.md) | LTS (JDK 21) | `control-node` | CI/CD server | [**Setup →**]() |
+| [**SonarQube**](./docs/docs/docs-why/sonarqube.md) | 9.9 | `control-node` | Static code analysis | [**Setup →**]() |
+| [**Nexus**](./docs/docs/docs-why/nexus.md) | 3.79.0 | `control-node` | Artifact & Docker registry | [**Setup →**]() |
+| [**Prometheus**](./docs/docs/docs-why/prometheus.md) | Latest | `monitoring-node` | Metrics collection | [**Setup →**]() |
+| [**Grafana**](./docs/docs/docs-why/grafana.md) | Latest | `monitoring-node` | Dashboards & visualization | [**Setup →**]() |
+| [**Loki**](./docs/docs/docs-why/loki.md) | Latest | `monitoring-node` | Log aggregation | [**Setup →**]() |
+| [**Promtail**](./docs/docs/docs-why/promtail.md) | Latest | `monitoring-node` | Log collection & shipping | [**Setup →**]() |
+| [**Node Exporter**](./docs/docs/docs-why/node_exporter.md) | Latest | All | Host-level metrics | [**Setup →**]() |
 | [**Kubernetes**]() | Latest | `k8s-*` | Container orchestration | [**Setup →**]() |
 
 
