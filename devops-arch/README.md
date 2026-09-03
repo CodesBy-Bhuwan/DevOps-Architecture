@@ -1,21 +1,41 @@
-# 🚀 DevOps Platform — End-to-End Automation
+# 🚀 DevOps Platform End-to-End Automation
 A fully automated, secure, and observable DevOps platform built from a blank AWS account.Provisioned with Terraform, configured with Ansible, secured with RBAC, and observed with the Prometheus + Loki + Grafana stack.
+<div align="center">
+<p><strong>End-to-End CI/CD, Monitoring & Logging Stack Deployed on AWS</strong></p>
 
-## 📖 Table of Contents
+  <!-- Badges for visual flair -->
+  <img src="https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white" alt="Terraform">
+  <img src="https://img.shields.io/badge/Ansible-EE0000?style=for-the-badge&logo=ansible&logoColor=white" alt="Ansible">
+  <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white" alt="Jenkins">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS">
+  <img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white" alt="Grafana">
+  <img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white" alt="Prometheus">
+  <br>
+  <!-- <img src="https://img.shields.io/badge/Status-Production_Ready-brightgreen?style=flat-square" alt="Status">
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"> -->
+</div>
 
-<ol>
-<li>Overview </li>
-<li>Architecture> </li>
-<li>Infrastructure Topology </li>
-<li>Requirements </li>
-<li>Repository Structure </li>
-<li>Quick Start </li>
-<li>Tool Documentation </li>
-<li>Usage </li>
-<li>Teardown </li>
-<li>Roadmap </li>
-<li>Contributing </li>
-</ol>
+---
+
+## Table of Contents
+
+- [🚀 DevOps Platform End-to-End Automation](#-devops-platform-end-to-end-automation)
+  - [Table of Contents](#table-of-contents)
+  - [🧭 Overview](#-overview)
+  - [🏗 Architecture](#-architecture)
+  - [🖥 Infrastructure Topology](#-infrastructure-topology)
+  - [✅ Requirements](#-requirements)
+    - [🔧 Local Prerequisites (on your workstation)](#-local-prerequisites-on-your-workstation)
+  - [🛠️ Prerequisites](#️-prerequisites)
+    - [☁️ Cloud Provider](#️-cloud-provider)
+    - [📦 Platform Tooling (installed by Ansible on remote hosts)](#-platform-tooling-installed-by-ansible-on-remote-hosts)
+  - [⚙️ Infrastructure \& Platform Tools](#️-infrastructure--platform-tools)
+    - [Pre-requisites](#pre-requisites)
+    - [🛠️ How to Setup the environment?](#️-how-to-setup-the-environment)
+  - [🚀 Quick Start](#-quick-start)
+
+---
 
 ## 🧭 Overview
 This repository delivers a complete DevOps platform that takes an empty AWS account and transforms it into a production-ready, observable CI/CD environment.
@@ -98,11 +118,11 @@ The platform depends on the following tools. Click any tool name to open its det
 
 | Tool | Purpose | Minimum Version | Documentation |
 |---|---|---:|---|
-| [**Terraform**]() | Infrastructure provisioning | ≥ 1.5.0 | [**Setup →**]() |
-| [**Ansible**]() | Configuration management | ≥ 2.12 | [**Setup →**]() |
-| [**AWS CLI**]() | Cloud authentication | ≥ 2.13 | [**Setup →**]() |
-| [**Git**]() | Source control | ≥ 2.40 | [**Setup →**]() |
-| [**SSH Client**]() | Instance access | Any | [**Setup →**]() |
+| [**Terraform**]() | Infrastructure provisioning | ≥ 1.5.0 | [**Setup >>**]() |
+| [**Ansible**]() | Configuration management | ≥ 2.12 | [**Setup >>**]() |
+| [**AWS CLI**]() | Cloud authentication | ≥ 2.13 | [**Setup >>**]() |
+| [**Git**]() | Source control | ≥ 2.40 | [**Setup >>**]() |
+| [**SSH Client**]() | Instance access | Any | [**Setup >>**]() |
 
 ### ☁️ Cloud Provider
 
@@ -111,22 +131,22 @@ The platform depends on the following tools. Click any tool name to open its det
 
 | Tool | Version | Server | Purpose | Documentation |
 |---|---|---|---|---|
-| [**AWS Account**]() | — | All | Compute, networking & IAM | [**Setup →**]() |
+| [**AWS Account**]() | -- | All | Compute, networking & IAM | [**Setup >>**]() |
 
 ## ⚙️ Infrastructure & Platform Tools
 
 | Tool | Version | Server | Purpose | Documentation |
 |---|---|---|---|---|
-| [**Docker**](./docs/docs/docs-why/docker.md) | Latest | All | Container runtime | [**Setup →**]() |
-| [**Jenkins**](./docs/docs/docs-why/jenkins.md) | LTS (JDK 21) | `control-node` | CI/CD server | [**Setup →**]() |
-| [**SonarQube**](./docs/docs/docs-why/sonarqube.md) | 9.9 | `control-node` | Static code analysis | [**Setup →**]() |
-| [**Nexus**](./docs/docs/docs-why/nexus.md) | 3.79.0 | `control-node` | Artifact & Docker registry | [**Setup →**]() |
-| [**Prometheus**](./docs/docs/docs-why/prometheus.md) | Latest | `monitoring-node` | Metrics collection | [**Setup →**]() |
-| [**Grafana**](./docs/docs/docs-why/grafana.md) | Latest | `monitoring-node` | Dashboards & visualization | [**Setup →**]() |
-| [**Loki**](./docs/docs/docs-why/loki.md) | Latest | `monitoring-node` | Log aggregation | [**Setup →**]() |
-| [**Promtail**](./docs/docs/docs-why/promtail.md) | Latest | `monitoring-node` | Log collection & shipping | [**Setup →**]() |
-| [**Node Exporter**](./docs/docs/docs-why/node_exporter.md) | Latest | All | Host-level metrics | [**Setup →**]() |
-| [**Kubernetes**]() | Latest | `k8s-*` | Container orchestration | [**Setup →**]() |
+| [**Docker**](./docs/docs/docs-why/docker.md) | Latest | All | Container runtime | [**Setup >>**]() |
+| [**Jenkins**](./docs/docs/docs-why/jenkins.md) | LTS (JDK 21) | `control-node` | CI/CD server | [**Setup >>**]() |
+| [**SonarQube**](./docs/docs/docs-why/sonarqube.md) | 9.9 | `control-node` | Static code analysis | [**Setup >>**]() |
+| [**Nexus**](./docs/docs/docs-why/nexus.md) | 3.79.0 | `control-node` | Artifact & Docker registry | [**Setup >>**]() |
+| [**Prometheus**](./docs/docs/docs-why/prometheus.md) | Latest | `monitoring-node` | Metrics collection | [**Setup >>**]() |
+| [**Grafana**](./docs/docs/docs-why/grafana.md) | Latest | `monitoring-node` | Dashboards & visualization | [**Setup >>**]() |
+| [**Loki**](./docs/docs/docs-why/loki.md) | Latest | `monitoring-node` | Log aggregation | [**Setup >>**]() |
+| [**Promtail**](./docs/docs/docs-why/promtail.md) | Latest | `monitoring-node` | Log collection & shipping | [**Setup >>**]() |
+| [**Node Exporter**](./docs/docs/docs-why/node_exporter.md) | Latest | All | Host-level metrics | [**Setup >>**]() |
+| [**Kubernetes**]() | Latest | `k8s-*` | Container orchestration | [**Setup >>**]() |
 
 
 
@@ -141,18 +161,20 @@ The platform depends on the following tools. Click any tool name to open its det
 
 You can deploy this platform either locally using Vagrant or in the AWS Cloud using Terraform. Once the servers are provisioned, Ansible is used to install and configure all tools (Docker, Jenkins, Nexus, Monitoring, etc.) identically across both environments.
 
-**🖥️ Local Environment (Vagrant)**
-  
-Ideal for local development and testing without incurring cloud costs.
+**🖥️ Local Environment (Vagrant)**      
+Ideal for local development and testing without incurring cloud costs.      
+Prerequisites: 
+  - [**Vagrant**](./docs/docs/setup/vagrant-setup.md)
+  - [**VirtualBox**](https://www.virtualbox.org/wiki/Downloads)
+  - [**Ansible**](./docs/docs/setup/ansible-setup.md)
 
-Prerequisites: [Vagrant](./docs/docs/setup/vagrant-setup.md), [VirtualBox](https://www.virtualbox.org/wiki/Downloads), [Ansible](./docs/docs/setup/ansible-setup.md)
 
-
-**☁️ AWS Cloud Environment (Terraform)**
-
-Ideal for testing real cloud infrastructure. Supports a $0.00 destroy/apply loop.
-
-Prerequisites: [AWS CLI](./docs/docs/setup/aws-cli-installation.md), [Terraform](./docs/docs/setup/terraform-setup.md), [Ansible](./docs/docs/setup/ansible-setup.md)
+**☁️ AWS Cloud Environment (Terraform)**        
+Ideal for testing real cloud infrastructure. Supports a $0.00 destroy/apply loop.       
+Prerequisites: 
+  - [**AWS CLI**](./docs/docs/setup/aws-cli-installation.md)
+  - [**Terraform**](./docs/docs/setup/terraform-setup.md)
+  - [**Ansible**](./docs/docs/setup/ansible-setup.md)
 
 ## 🚀 Quick Start
 
