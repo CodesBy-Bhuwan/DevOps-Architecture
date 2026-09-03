@@ -1,4 +1,4 @@
-*This file explains the "Why" and the structural design of your platform.*
+*This file explains the "Why" and the structural design of our platform.*
 
 # DevOps Platform Architecture
 
