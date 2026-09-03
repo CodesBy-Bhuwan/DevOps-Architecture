@@ -1,0 +1,779 @@
+# ============================================================
+# Infrastructure / DevOps .gitignore
+# Vagrant + AWS EC2 + Bash + YAML + Terraform + Ansible
+# ============================================================
+
+
+# ------------------------------------------------------------
+# OS / Editor Files
+# ------------------------------------------------------------
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Vim
+*.swp
+*.swo
+*~
+[._]*.s[a-v][a-z]
+
+# Emacs
+*~
+\#*\#
+.\#*
+*.elc
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+
+# ------------------------------------------------------------
+# General Temporary / Generated Files
+# ------------------------------------------------------------
+
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+*.orig
+*.log
+*.cache
+
+tmp/
+temp/
+cache/
+logs/
+
+*.pid
+*.pid.lock
+
+
+# ------------------------------------------------------------
+# Environment / Secrets
+# ------------------------------------------------------------
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Keep example environment files
+!.env.example
+!.env.sample
+!.env.template
+
+# Secret/config files
+secrets/
+secret/
+credentials/
+private/
+*.secret
+*.secrets
+*.credentials
+
+# Common secret formats
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# SSH keys
+id_rsa
+id_rsa.pub
+id_dsa
+id_dsa.pub
+id_ecdsa
+id_ecdsa.pub
+id_ed25519
+id_ed25519.pub
+
+# AWS credentials
+.aws/
+.aws/credentials
+.aws/config
+
+# IMPORTANT:
+# Do not commit AWS access keys, secret keys, or session tokens.
+
+
+# ------------------------------------------------------------
+# Vagrant
+# ------------------------------------------------------------
+
+# Vagrant working directory
+.vagrant/
+
+# Vagrant logs
+vagrant.log
+vagrant.log.*
+
+# Vagrant temporary files
+*.vagrant
+
+# Vagrant machine-specific state
+.vagrant/machines/
+
+# Vagrant box downloads/cache
+.vagrant.d/
+
+# VirtualBox files
+*.vdi
+*.vmdk
+*.vhd
+*.vhdx
+*.ova
+*.ovf
+
+# VirtualBox machine state
+*.sav
+*.mem
+*.nvram
+*.lock
+
+
+# ------------------------------------------------------------
+# Virtual Machines
+# ------------------------------------------------------------
+
+# VMware
+*.vmem
+*.vmss
+*.vmsn
+*.vmxf
+*.vmx.lck
+
+# Parallels
+*.pvm
+*.hdd
+
+# QEMU
+*.qcow
+*.qcow2
+*.img
+
+
+# ------------------------------------------------------------
+# AWS
+# ------------------------------------------------------------
+
+# AWS CLI credentials/config
+.aws/
+
+# AWS SAM
+.aws-sam/
+
+# AWS CDK
+.cdk.staging/
+cdk.out/
+
+# AWS CLI generated files
+aws-output/
+aws-cache/
+
+# Terraform AWS-related state
+terraform.tfstate
+terraform.tfstate.*
+.terraform/
+
+
+# ------------------------------------------------------------
+# Terraform
+# ------------------------------------------------------------
+
+# Terraform working directory
+.terraform/
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+
+# Terraform variable files
+*.tfvars
+*.tfvars.json
+
+# Allow example variable files
+!*.tfvars.example
+!*.tfvars.sample
+
+# Terraform crash logs
+crash.log
+crash.*.log
+
+# Terraform plans
+*.tfplan
+*.plan
+
+# Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform lock file
+# Usually this SHOULD be committed for reproducible infrastructure.
+# Therefore we explicitly allow it.
+! .terraform.lock.hcl
+
+
+# ------------------------------------------------------------
+# Ansible
+# ------------------------------------------------------------
+
+# Ansible retry files
+*.retry
+
+# Ansible vault passwords / secrets
+.vault_password
+.vault-password
+vault-password
+vault_password
+vault.pass
+
+# Ansible generated files
+ansible.log
+*.ansible.log
+
+# Ansible temporary files
+.ansible/
+ansible-tmp/
+ansible-cache/
+
+# Allow Ansible YAML/YML files to be committed
+# *.yml and *.yaml are intentionally NOT ignored.
+
+
+# ------------------------------------------------------------
+# Packer
+# ------------------------------------------------------------
+
+# Packer cache
+packer_cache/
+
+# Packer generated files
+*.box
+*.vagrant
+packer-manifest.json
+
+# Packer logs
+packer.log
+
+
+# ------------------------------------------------------------
+# Bash / Shell
+# ------------------------------------------------------------
+
+# Bash history
+.bash_history
+.bash_sessions/
+
+# Shell history
+.zsh_history
+.fish_history
+
+# Shell temporary files
+*.sh.tmp
+*.sh.bak
+
+# Generated shell output
+shell-output/
+script-output/
+
+# NOTE:
+# .sh files are intentionally NOT ignored.
+# Infrastructure provisioning scripts should normally be committed.
+
+
+# ------------------------------------------------------------
+# Python
+# ------------------------------------------------------------
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Python packaging
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# pytest
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+
+# ------------------------------------------------------------
+# Node.js / JavaScript
+# ------------------------------------------------------------
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.npm/
+.yarn/
+.pnpm-store/
+
+dist/
+build/
+coverage/
+
+# Environment files are handled above.
+
+
+# ------------------------------------------------------------
+# Ansible / YAML Generated Files
+# ------------------------------------------------------------
+
+# Generated inventories
+inventory.generated
+inventory.generated.yml
+inventory.generated.yaml
+hosts.generated
+hosts.generated.yml
+hosts.generated.yaml
+
+# Dynamic inventory output
+dynamic-inventory/
+generated-inventory/
+
+# Generated YAML
+generated/
+generated-yaml/
+
+
+# ------------------------------------------------------------
+# SSH / Server Configuration
+# ------------------------------------------------------------
+
+# SSH known hosts
+known_hosts
+
+# SSH config generated locally
+ssh_config.local
+ssh_config.generated
+
+# Server connection information
+hosts.local
+inventory.local
+
+# Local provisioning configuration
+local-config/
+local-configs/
+
+
+# ------------------------------------------------------------
+# Certificates / TLS
+# ------------------------------------------------------------
+
+*.pem
+*.key
+*.csr
+*.crt
+*.cer
+*.der
+*.p7b
+*.p7c
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Certificate directories
+certs/
+certificates/
+ssl/
+tls/
+
+# Allow public/example certificates if desired
+!certs/example/
+!certificates/example/
+
+
+# ------------------------------------------------------------
+# Docker
+# ------------------------------------------------------------
+
+# Docker local overrides
+docker-compose.override.yml
+docker-compose.override.yaml
+
+# Docker secrets
+docker-secrets/
+docker/secret/
+
+# Docker volumes
+docker-volumes/
+
+# Docker logs
+docker/logs/
+
+
+# ------------------------------------------------------------
+# Kubernetes
+# ------------------------------------------------------------
+
+# Local kubeconfig
+.kube/
+kubeconfig
+kubeconfig.local
+
+# Generated Kubernetes files
+k8s/generated/
+kubernetes/generated/
+
+# Kubernetes secrets
+*secret*.yaml
+*secret*.yml
+
+# Allow explicitly named example secrets
+!*-secret.example.yaml
+!*-secret.example.yml
+
+
+# ------------------------------------------------------------
+# Minikube / Kind
+# ------------------------------------------------------------
+
+.minikube/
+.kind/
+
+
+# ------------------------------------------------------------
+# Cloud-init
+# ------------------------------------------------------------
+
+# Cloud-init logs
+cloud-init.log
+cloud-init-output.log
+
+# Generated cloud-init files
+cloud-init-generated/
+cloud-init-output/
+
+
+# ------------------------------------------------------------
+# Deployment Artifacts
+# ------------------------------------------------------------
+
+deployments/
+deployment-output/
+artifacts/
+artifact/
+releases/
+
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+
+# ------------------------------------------------------------
+# Build Artifacts
+# ------------------------------------------------------------
+
+build/
+dist/
+out/
+output/
+
+*.bin
+*.iso
+*.img
+
+
+# ------------------------------------------------------------
+# Database / Local Development
+# ------------------------------------------------------------
+
+*.sqlite
+*.sqlite3
+*.db
+
+data/
+local-data/
+
+
+# ------------------------------------------------------------
+# Application Logs
+# ------------------------------------------------------------
+
+*.log
+logs/
+
+# Keep important example logs if needed
+!logs/example/
+
+
+# ------------------------------------------------------------
+# Generated Documentation
+# ------------------------------------------------------------
+
+docs/generated/
+site/
+public/
+
+
+# ------------------------------------------------------------
+# Local Infrastructure State
+# ------------------------------------------------------------
+
+state/
+.local/
+.local-state/
+.runtime/
+runtime/
+
+*.state
+*.state.json
+
+
+# ------------------------------------------------------------
+# Backup Files
+# ------------------------------------------------------------
+
+backup/
+backups/
+
+*.backup
+*.bak
+*.old
+*.orig
+
+
+# ------------------------------------------------------------
+# Local Overrides
+# ------------------------------------------------------------
+
+# Local-only infrastructure configuration
+*.local
+*.local.yml
+*.local.yaml
+*.local.json
+*.local.conf
+*.local.cfg
+
+# Explicitly allow committed examples
+!*.local.example
+!*.local.sample
+
+
+# ------------------------------------------------------------
+# Credentials accidentally generated by tools
+# ------------------------------------------------------------
+
+credentials.json
+credentials.yml
+credentials.yaml
+service-account.json
+serviceaccount.json
+
+# Cloud provider credentials
+gcp-credentials.json
+azure-credentials.json
+aws-credentials.json
+
+
+# ------------------------------------------------------------
+# JWT / Tokens
+# ------------------------------------------------------------
+
+*.token
+*.tokens
+*.jwt
+
+token/
+tokens/
+
+
+# ------------------------------------------------------------
+# Terraform / OpenTofu Additional Files
+# ------------------------------------------------------------
+
+.terraform.lock.hcl
+
+# NOTE:
+# The Terraform lock file is normally committed.
+# If using Terraform/OpenTofu, REMOVE the line above if you
+# want dependency locking to be tracked.
+# The recommended approach is to COMMIT this file.
+
+
+# ------------------------------------------------------------
+# Pulumi
+# ------------------------------------------------------------
+
+.pulumi/
+Pulumi.*.yaml
+
+# Keep non-secret project configuration if appropriate
+!Pulumi.yaml
+
+
+# ------------------------------------------------------------
+# Server Provisioning Output
+# ------------------------------------------------------------
+
+provisioning-output/
+provision-output/
+setup-output/
+install-output/
+
+*.provision.log
+*.install.log
+*.setup.log
+
+
+# ------------------------------------------------------------
+# Local AWS / EC2 Generated Data
+# ------------------------------------------------------------
+
+ec2-output/
+ec2-state/
+ec2-instances/
+instance-data/
+
+# Generated public/private IP lists
+public-ips.txt
+private-ips.txt
+instance-ips.txt
+instance-ids.txt
+
+
+# ------------------------------------------------------------
+# Vagrant Generated Data
+# ------------------------------------------------------------
+
+vagrant-output/
+vagrant-state/
+
+# Vagrant generated host information
+vagrant-hosts
+vagrant-hosts.txt
+vagrant-inventory
+
+
+# ------------------------------------------------------------
+# Miscellaneous Generated Files
+# ------------------------------------------------------------
+
+*.generated
+*.generated.json
+*.generated.conf
+
+generated/
+generated-files/
+
+# Runtime files
+run/
+runtime/
+*.run
+
+# PID / socket files
+*.sock
+*.socket
+
+
+# ------------------------------------------------------------
+# Preserve Infrastructure Source Files
+# ------------------------------------------------------------
+
+# The following are intentionally NOT ignored:
+#
+# *.sh
+# *.bash
+# *.yml
+# *.yaml
+# Vagrantfile
+# *.tf
+# *.tfvars.example
+# ansible/
+# playbooks/
+# roles/
+# scripts/
+#
+# These files contain the actual infrastructure definitions
+# and should normally be committed to Git.
+
+
+# ------------------------------------------------------------
+# Explicit Infrastructure Files That Should Be Tracked
+# ------------------------------------------------------------
+
+!Vagrantfile
+!*.sh
+!*.bash
+!*.yml
+!*.yaml
+
+# Common infrastructure directories
+# !scripts/
+# !scripts/**
+# !provision/
+# !provision/**
+# !ansible/
+# !ansible/**
+# !playbooks/
+# !playbooks/**
+# !roles/
+# !roles/**
+
+# Terraform source
+!*.tf
+
+# Terraform lock file should be tracked
+!.terraform.lock.hcl
+#aws-docs/
+#aws-docs/*
+

@@ -45,5 +45,14 @@ prometheus:
 grafana:
 	$(ANSIBLE) $(PLAYBOOK)/grafana.yml
 
+loki:
+	$(ANSIBLE) $(PLAYBOOK)/loki.yml
+
+promtail:
+	$(ANSIBLE) $(PLAYBOOK)/promtail.yml
+
+integrate-monitor:
+	$(ANSIBLE) $(PLAYBOOK)/integrate-monitor.yml
+
 argocd:
 	$(ANSIBLE) $(PLAYBOOK)/argocd.yml

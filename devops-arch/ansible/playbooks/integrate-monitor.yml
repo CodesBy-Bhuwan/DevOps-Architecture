@@ -1,0 +1,29 @@
+---
+- name: Integrate Monitoring Stack
+  hosts: monitoring-node
+  become: yes
+  tasks:
+    - name: Render Prometheus configuration
+      template:
+        src: ../roles/prometheus/templates/prometheus.yml.j2
+        dest: /opt/prometheus/prometheus.yml
+
+    # ADD THIS TASK TO CREATE THE DIRECTORY!
+    - name: Ensure Grafana provisioning directory exists
+      file:
+        path: /opt/grafana/provisioning/datasources
+        state: directory
+        mode: "0755"
+
+    - name: Render Grafana datasources configuration
+      template:
+        src: ../roles/grafana/templates/datasources.yml.j2
+        dest: /opt/grafana/provisioning/datasources/datasources.yml
+
+    - name: Restart Prometheus to load scrape config
+      command: docker restart prometheus
+      changed_when: false
+
+    - name: Restart Grafana to load datasources
+      command: docker restart grafana
+      changed_when: false
