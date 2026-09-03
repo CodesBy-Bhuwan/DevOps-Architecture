@@ -98,11 +98,11 @@ The platform depends on the following tools. Click any tool name to open its det
 
 | Tool | Purpose | Minimum Version | Documentation |
 |---|---|---:|---|
-| [**Terraform**](https://chat.z.ai/c/docs/terraform.md) | Infrastructure provisioning | ≥ 1.5.0 | [**Setup →**](https://chat.z.ai/c/docs/terraform.md) |
-| [**Ansible**](https://chat.z.ai/c/docs/ansible.md) | Configuration management | ≥ 2.12 | [**Setup →**](https://chat.z.ai/c/docs/ansible.md) |
-| [**AWS CLI**](https://chat.z.ai/c/docs/aws-cli.md) | Cloud authentication | ≥ 2.13 | [**Setup →**](https://chat.z.ai/c/docs/aws-cli.md) |
-| [**Git**](https://chat.z.ai/c/docs/git.md) | Source control | ≥ 2.40 | [**Setup →**](https://chat.z.ai/c/docs/git.md) |
-| [**SSH Client**](https://chat.z.ai/c/docs/ssh.md) | Instance access | Any | [**Setup →**](https://chat.z.ai/c/docs/ssh.md) |
+| [**Terraform**]() | Infrastructure provisioning | ≥ 1.5.0 | [**Setup →**]() |
+| [**Ansible**]() | Configuration management | ≥ 2.12 | [**Setup →**]() |
+| [**AWS CLI**]() | Cloud authentication | ≥ 2.13 | [**Setup →**]() |
+| [**Git**]() | Source control | ≥ 2.40 | [**Setup →**]() |
+| [**SSH Client**]() | Instance access | Any | [**Setup →**]() |
 
 ### ☁️ Cloud Provider
 
@@ -111,22 +111,22 @@ The platform depends on the following tools. Click any tool name to open its det
 
 | Tool | Version | Server | Purpose | Documentation |
 |---|---|---|---|---|
-| [**AWS Account**](https://chat.z.ai/c/docs/aws-account.md) | — | All | Compute, networking & IAM | [**Setup →**](https://chat.z.ai/c/docs/aws-account.md) |
+| [**AWS Account**]() | — | All | Compute, networking & IAM | [**Setup →**]() |
 
 ## ⚙️ Infrastructure & Platform Tools
 
 | Tool | Version | Server | Purpose | Documentation |
 |---|---|---|---|---|
-| [**Docker**](https://chat.z.ai/c/docs/docker.md) | Latest | All | Container runtime | [**Setup →**](https://chat.z.ai/c/docs/docker.md) |
-| [**Jenkins**](https://chat.z.ai/c/docs/jenkins.md) | LTS (JDK 21) | `control-node` | CI/CD server | [**Setup →**](https://chat.z.ai/c/docs/jenkins.md) |
-| [**SonarQube**](https://chat.z.ai/c/docs/sonarqube.md) | 9.9 | `control-node` | Static code analysis | [**Setup →**](https://chat.z.ai/c/docs/sonarqube.md) |
-| [**Nexus**](https://chat.z.ai/c/docs/nexus.md) | 3.79.0 | `control-node` | Artifact & Docker registry | [**Setup →**](https://chat.z.ai/c/docs/nexus.md) |
-| [**Prometheus**](https://chat.z.ai/c/docs/prometheus.md) | Latest | `monitoring-node` | Metrics collection | [**Setup →**](https://chat.z.ai/c/docs/prometheus.md) |
-| [**Grafana**](https://chat.z.ai/c/docs/grafana.md) | Latest | `monitoring-node` | Dashboards & visualization | [**Setup →**](https://chat.z.ai/c/docs/grafana.md) |
-| [**Loki**](https://chat.z.ai/c/docs/loki.md) | Latest | `monitoring-node` | Log aggregation | [**Setup →**](https://chat.z.ai/c/docs/loki.md) |
-| [**Promtail**](https://chat.z.ai/c/docs/promtail.md) | Latest | `monitoring-node` | Log collection & shipping | [**Setup →**](https://chat.z.ai/c/docs/promtail.md) |
-| [**Node Exporter**](https://chat.z.ai/c/docs/node-exporter.md) | Latest | All | Host-level metrics | [**Setup →**](https://chat.z.ai/c/docs/node-exporter.md) |
-| [**Kubernetes**](https://chat.z.ai/c/docs/kubernetes.md) | Latest | `k8s-*` | Container orchestration | [**Setup →**](https://chat.z.ai/c/docs/kubernetes.md) |
+| [**Docker**]() | Latest | All | Container runtime | [**Setup →**]() |
+| [**Jenkins**]() | LTS (JDK 21) | `control-node` | CI/CD server | [**Setup →**]() |
+| [**SonarQube**]() | 9.9 | `control-node` | Static code analysis | [**Setup →**]() |
+| [**Nexus**]() | 3.79.0 | `control-node` | Artifact & Docker registry | [**Setup →**]() |
+| [**Prometheus**]() | Latest | `monitoring-node` | Metrics collection | [**Setup →**]() |
+| [**Grafana**]() | Latest | `monitoring-node` | Dashboards & visualization | [**Setup →**]() |
+| [**Loki**]() | Latest | `monitoring-node` | Log aggregation | [**Setup →**]() |
+| [**Promtail**]() | Latest | `monitoring-node` | Log collection & shipping | [**Setup →**]() |
+| [**Node Exporter**]() | Latest | All | Host-level metrics | [**Setup →**]() |
+| [**Kubernetes**]() | Latest | `k8s-*` | Container orchestration | [**Setup →**]() |
 
 
 
