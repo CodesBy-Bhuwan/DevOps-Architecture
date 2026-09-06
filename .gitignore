@@ -188,6 +188,12 @@ vagrant.log.*
 # AWS SAM
 .aws-sam/
 
+# AWS inventory
+aws.ini
+/aws.ini
+*/aws.ini
+*aws.ini
+
 # AWS CDK
 .cdk.staging/
 cdk.out/
