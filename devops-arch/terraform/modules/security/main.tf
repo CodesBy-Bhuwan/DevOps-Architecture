@@ -165,3 +165,38 @@ resource "aws_security_group" "monitoring" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+# 4. Docker Deployment Target (Nginx/Apps)
+resource "aws_security_group" "docker_target" {
+  name        = "${var.environment}-docker_target_sg"
+  description = "Allow SSH, Node Exporter, and Web Ports"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8088
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Web traffic for deployed apps
+  }
+
+  ingress {
+    from_port   = 9100
+    to_port     = 9100
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"] # Prometheus internal traffic
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}

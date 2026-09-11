@@ -39,6 +39,15 @@ module "compute" {
   k8s_master_volume_size    = var.k8s_master_volume_size
   k8s_worker_volume_size    = var.k8s_worker_volume_size
   monitoring_volume_size    = var.monitoring_volume_size
+
+  # Existing variables 
+  docker_target_instance_type = var.docker_target_instance_type
+  docker_target_volume_size   = var.docker_target_volume_size
+  docker_target_sg_id         = module.security.docker_target_sg_id
+
+  # ... existing  variables ...
+  enable_kubernetes          = var.enable_kubernetes
+  enable_docker_target       = var.enable_docker_target
 }
 ####################################################
 # Automatically generate ansible/inventory/aws.ini
@@ -62,13 +71,22 @@ monitoring-node ansible_host=${module.compute.monitoring_ops_public_ip} private_
 [grafana]
 monitoring-node ansible_host=${module.compute.monitoring_ops_public_ip} private_ip=${module.compute.monitoring_ops_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
 
-# --- Kubernetes ---
 [k8s_master]
-k8s-master ansible_host=${module.compute.k8s_master_public_ip} private_ip=${module.compute.k8s_master_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+%{ if var.enable_kubernetes }
+ ${module.compute.k8s_master_public_ip} private_ip=${module.compute.k8s_master_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+%{ endif }
 
 [k8s_workers]
+%{ if var.enable_kubernetes }
 %{ for i, ip in module.compute.k8s_workers_public_ips ~}
-k8s-worker-${i + 1} ansible_host=${ip} private_ip=${module.compute.k8s_workers_private_ips[i]} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+ ${ip} private_ip=${module.compute.k8s_workers_private_ips[i]} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
 %{ endfor ~}
+%{ endif }
+
+[docker_target]
+%{ if var.enable_docker_target }
+ ${module.compute.docker_target_public_ip} private_ip=${module.compute.docker_target_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+%{ endif }
   EOF
 }
+

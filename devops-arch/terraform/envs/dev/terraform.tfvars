@@ -17,6 +17,7 @@ control_plane_instance_type = "t3.large"
 k8s_master_instance_type    = "t3.large"
 k8s_worker_instance_type    = "t3.medium"
 monitoring_instance_type    = "t3.medium"
+docker_target_instance_type = "t3.medium"
 
 # Number of workers
 k8s_worker_count = 2
@@ -26,3 +27,10 @@ control_plane_volume_size = 30  # For Jenkins & SonarQube
 k8s_master_volume_size    = 20  # For etcd & K8s control plane
 k8s_worker_volume_size    = 25  # For app workloads
 monitoring_volume_size    = 50  # For Prometheus & Nexus
+docker_target_volume_size = 25  # For Docker deployment
+
+
+# --- Infrastructure Toggles ---
+# Set to true to build the server, false to skip building it.
+enable_kubernetes      = true
+enable_docker_target    = true

@@ -29,9 +29,15 @@ aws-init:
 	@echo "Initializing..."
 	cd terraform/envs/dev && terraform init
 
+# Default values if the user doesn't pass anything
+K8 ?= true
+DO ?= true
+
 aws-up:
-	@echo "Building AWS Infrastructure..."
-	cd terraform/envs/dev && terraform apply -auto-approve
+	@echo "Building AWS Infrastructure (K8s: $(K8), Docker: $(DO))..."
+	cd terraform/envs/dev && terraform apply -auto-approve \
+		-var="enable_kubernetes=$(K8)" \
+		-var="enable_docker_target=$(DO)"
 	@echo "Generating Ansible Inventory..."
 	./scripts/generate-ansible-inventory.sh
 	@echo "AWS servers are up and Ansible is ready!"
