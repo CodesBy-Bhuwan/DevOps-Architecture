@@ -29,6 +29,15 @@ variable "enable_kubernetes" {
 variable "enable_docker_target" {
   type    = bool
 }
+
+variable "enable_control_plane" {
+  type = bool
+}
+
+variable "enable_monitoring"{
+  type = bool
+}
+
 # Instance Types
 variable "control_plane_instance_type" { type = string }
 variable "k8s_master_instance_type"    { type = string }

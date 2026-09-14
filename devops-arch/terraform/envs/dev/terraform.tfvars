@@ -32,5 +32,7 @@ docker_target_volume_size = 25  # For Docker deployment
 
 # --- Infrastructure Toggles ---
 # Set to true to build the server, false to skip building it.
-enable_kubernetes      = true
+enable_kubernetes       = true
 enable_docker_target    = true
+enable_control_plane    = true
+enable_monitoring       = true

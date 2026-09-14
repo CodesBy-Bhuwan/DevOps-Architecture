@@ -7,6 +7,8 @@
   with_items:
     - /opt/grafana
     - /opt/grafana/provisioning/datasources
+    - /opt/grafana/provisioning/dashboards
+    - /opt/grafana/dashboards
 
 - name: Remove old Grafana container
   command: docker rm -f grafana
@@ -22,4 +24,6 @@
     -e GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password }}
     -v grafana_data:/var/lib/grafana
     -v /opt/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    -v /opt/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    -v /opt/grafana/dashboards:/var/lib/grafana/dashboards
     {{ grafana_image }}

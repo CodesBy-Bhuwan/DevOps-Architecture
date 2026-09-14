@@ -1,6 +1,6 @@
-output "control_plane_public_ip" {
-  value = aws_instance.control_plane.public_ip
-}
+#output "control_plane_public_ip" {
+#  value = aws_instance.control_plane.public_ip
+#}
 
 #output "k8s_master_public_ip" {
 #  value = aws_instance.k8s_master.public_ip
@@ -10,18 +10,18 @@ output "control_plane_public_ip" {
 #  value = aws_instance.k8s_workers[*].public_ip
 #}
 
-output "monitoring_ops_public_ip" {
-  value = aws_instance.monitoring_ops.public_ip
-}
+#output "monitoring_ops_public_ip" {
+#  value = aws_instance.monitoring_ops.public_ip
+#}
 
 ##### we might use private_ip
-output "control_plane_private_ip" {
-  value = aws_instance.control_plane.private_ip
-}
+#output "control_plane_private_ip" {
+#  value = aws_instance.control_plane.private_ip
+#}
 
-output "monitoring_ops_private_ip" {
-  value = aws_instance.monitoring_ops.private_ip
-}
+#output "monitoring_ops_private_ip" {
+#  value = aws_instance.monitoring_ops.private_ip
+#}
 
 #output "k8s_master_private_ip" {
 #  value = aws_instance.k8s_master.private_ip
@@ -57,4 +57,16 @@ output "docker_target_public_ip" {
 }
 output "docker_target_private_ip" {
   value = join("", aws_instance.docker_target[*].private_ip)
+}
+output "control_plane_public_ip" {
+  value = join("", aws_instance.control_plane[*].public_ip)
+}
+output "control_plane_private_ip" {
+  value = join("", aws_instance.control_plane[*].private_ip)
+}
+output "monitoring_ops_public_ip" {
+  value = join("", aws_instance.monitoring_ops[*].public_ip)
+}
+output "monitoring_ops_private_ip" {
+  value = join("", aws_instance.monitoring_ops[*].private_ip)
 }

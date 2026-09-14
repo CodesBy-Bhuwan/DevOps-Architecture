@@ -1,6 +1,6 @@
 ---
 - name: Deploy Loki
-  hosts: monitoring_ops
+  hosts: monitoring-node
   become: yes
   roles:
     - loki

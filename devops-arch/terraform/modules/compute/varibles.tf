@@ -24,3 +24,5 @@ variable "docker_target_volume_size" { type = number }
 
 variable "enable_kubernetes" { type = bool }
 variable "enable_docker_target" { type = bool }
+variable "enable_control_plane" { type = bool }
+variable "enable_monitoring" { type = bool }

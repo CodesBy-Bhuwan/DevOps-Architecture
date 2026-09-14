@@ -45,6 +45,14 @@ scrape_configs:
           - '{{ hostvars[host].get('private_ip', hostvars[host].get('ansible_host')) }}:8080'
           {% endfor %}
 
+  # 4. cadvisor
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets:
+          {% for host in groups['all'] %}
+          - '{{ hostvars[host].get('private_ip', hostvars[host].get('ansible_host')) }}:9101'
+          {% endfor %}
+
   # 4. Monitor SonarQube
 #  - job_name: 'sonarqube'
 #    metrics_path: '/api/monitoring/metrics'

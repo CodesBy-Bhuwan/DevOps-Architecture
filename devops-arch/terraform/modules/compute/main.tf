@@ -1,5 +1,6 @@
 # 1. CONTROL PLANE
 resource "aws_instance" "control_plane" {
+  count                  = var.enable_control_plane ? 1 : 0
   ami                    = var.ami_id
   instance_type          = var.control_plane_instance_type
   key_name               = var.key_name
@@ -60,6 +61,7 @@ resource "aws_instance" "docker_target" {
 
 # 5. MONITORING & OPS
 resource "aws_instance" "monitoring_ops" {
+  count                  = var.enable_monitoring ? 1 : 0
   ami                    = var.ami_id
   instance_type          = var.monitoring_instance_type
   key_name               = var.key_name

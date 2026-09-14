@@ -54,5 +54,28 @@ promtail:
 integrate-monitor:
 	$(ANSIBLE) $(PLAYBOOK)/integrate-monitor.yml
 
+# ==========================================
+# MONITORING & DASHBOARDS
+# ==========================================
+
+cadvisor:
+	$(ANSIBLE) $(PLAYBOOK)/cadvisor.yml
+
+grafana-rebuild:
+	@echo "Wiping old Grafana container and data..."
+	ansible monitoring_ops -i $(INVENTORY) -b -m shell -a "docker rm -f grafana; rm -rf /opt/grafana"
+	@echo "Rebuilding Grafana with new volume mounts..."
+	$(MAKE) grafana ENV=$(ENV)
+
+# Master command to set up the entire observability stack
+monitoring-setup:
+	@echo "Step 1: Installing cAdvisor..."
+	$(MAKE) cadvisor ENV=$(ENV)
+	@echo "Step 2: Rebuilding Grafana..."
+	$(MAKE) grafana-rebuild ENV=$(ENV)
+	@echo "Step 3: Running Monitoring Integration (Prometheus config & Dashboards)..."
+	$(MAKE) integrate-monitor ENV=$(ENV)
+	@echo "Observability stack setup complete! Wait 30s for Grafana to boot."
+
 argocd:
 	$(ANSIBLE) $(PLAYBOOK)/argocd.yml
