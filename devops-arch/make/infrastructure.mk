@@ -29,11 +29,19 @@ aws-init:
 	@echo "Initializing..."
 	cd terraform/envs/dev && terraform init
 
+# Default values if the user doesn't pass anything
+K8 ?= true
+DO ?= true
+CI ?= true
+MO ?= true
+
 aws-up:
-	@echo "Building AWS Infrastructure..."
-	cd terraform/envs/dev && terraform apply -auto-approve
-	@echo "Generating Ansible Inventory..."
-	./scripts/generate-ansible-inventory.sh
+	@echo "Building AWS Infrastructure (Control: $(CI), Monitor: $(MO), K8s: $(K8), Docker: $(DO))..."
+	cd terraform/envs/dev && terraform apply -auto-approve \
+		-var="enable_control_plane=$(CI)" \
+		-var="enable_monitoring=$(MO)" \
+		-var="enable_kubernetes=$(K8)" \
+		-var="enable_docker_target=$(DO)"
 	@echo "AWS servers are up and Ansible is ready!"
 
 aws-plan:
@@ -47,5 +55,5 @@ aws-destroy:
 	@echo "AWS servers have been destroyed. Billing stopped."
 
 # 3. Just refresh the Ansible inventory (if you manually changed Terraform)
-inventory:
-	./scripts/generate-ansible-inventory.sh
+#inventory:
+#	./scripts/generate-ansible-inventory.sh

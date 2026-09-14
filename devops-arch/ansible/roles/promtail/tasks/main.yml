@@ -1,0 +1,29 @@
+---
+- name: Create Promtail directory
+  ansible.builtin.file:
+    path: /opt/promtail
+    state: directory
+    mode: "0755"
+
+- name: Copy Promtail config using Template
+  ansible.builtin.template:
+    src: promtail-config.yml.j2
+    dest: /opt/promtail/promtail-config.yml
+    mode: "0644"
+
+- name: Run Promtail Container
+  community.docker.docker_container:
+    name: promtail
+    image: grafana/promtail:2.9.0
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "9080:9080"
+    volumes:
+      # Mount the config file
+      - /opt/promtail/promtail-config.yml:/etc/promtail/config.yml
+      # Mount the Docker socket so Promtail can see all containers
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Mount the Docker log directory so Promtail can read the physical files
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    command: -config.file=/etc/promtail/config.yml

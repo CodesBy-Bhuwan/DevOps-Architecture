@@ -1,0 +1,20 @@
+---
+- name: Create Loki directory
+  ansible.builtin.file:
+    path: /opt/loki
+    state: directory
+    owner: 10001
+    group: 10001
+    mode: "0755"
+
+- name: Run Loki Container
+  community.docker.docker_container:
+    name: loki
+    image: grafana/loki:2.9.0
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - /opt/loki:/loki
+    command: -config.file=/etc/loki/local-config.yaml

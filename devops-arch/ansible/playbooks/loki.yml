@@ -1,0 +1,6 @@
+---
+- name: Deploy Loki
+  hosts: monitoring-node
+  become: yes
+  roles:
+    - loki

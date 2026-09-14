@@ -9,3 +9,7 @@ output "k8s_sg_id" {
 output "monitoring_sg_id" {
   value = aws_security_group.monitoring.id
 }
+
+output "docker_target_sg_id" {
+  value = aws_security_group.docker_target.id
+}

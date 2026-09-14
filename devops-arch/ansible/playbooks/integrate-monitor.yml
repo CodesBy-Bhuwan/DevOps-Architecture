@@ -1,0 +1,62 @@
+---
+- name: Integrate Monitoring Stack
+  hosts: monitoring-node
+  become: yes
+  tasks:
+    - name: Render Prometheus configuration
+      template:
+        src: ../roles/prometheus/templates/prometheus.yml.j2
+        dest: /opt/prometheus/prometheus.yml
+
+    # ADD THIS TASK TO CREATE THE DIRECTORY!
+    - name: Ensure Grafana provisioning directory exists
+      file:
+        path: /opt/grafana/provisioning/datasources
+        state: directory
+        mode: "0755"
+
+    - name: Render Grafana datasources configuration
+      template:
+        src: ../roles/grafana/templates/datasources.yml.j2
+        dest: /opt/grafana/provisioning/datasources/datasources.yml
+
+    - name: Restart Prometheus to load scrape config
+      command: docker restart prometheus
+      changed_when: false
+
+    - name: Restart Grafana to load datasources
+      command: docker restart grafana
+      changed_when: false
+
+    - name: Render Grafana dashboards provisioning config
+      template:
+        src: ../roles/grafana/templates/dashboards.yml.j2
+        dest: /opt/grafana/provisioning/dashboards/dashboards.yml
+
+    - name: Download Server Metrics Dashboard (Node Exporter)
+      get_url:
+        url: "https://grafana.com/api/dashboards/1860/revisions/37/download"
+        dest: /opt/grafana/dashboards/node-exporter.json
+        mode: '0644'
+
+    - name: Download Container Metrics Dashboard (cAdvisor)
+      get_url:
+        url: "https://grafana.com/api/dashboards/193/revisions/2/download"
+        dest: /opt/grafana/dashboards/cadvisor.json
+        mode: '0644'
+
+    - name: Download Logs Dashboard (Loki)
+      get_url:
+        url: "https://grafana.com/api/dashboards/13639/revisions/2/download"
+        dest: /opt/grafana/dashboards/loki-logs.json
+        mode: '0644'
+
+    - name: Download Jenkins Dashboard
+      get_url:
+        url: "https://grafana.com/api/dashboards/9964/revisions/1/download"
+        dest: /opt/grafana/dashboards/jenkins.json
+        mode: '0644'
+
+    - name: Restart Grafana to load dashboards
+      command: docker restart grafana
+      changed_when: false
