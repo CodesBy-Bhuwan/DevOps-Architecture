@@ -104,6 +104,41 @@
       tags: sonar
 
     # ==========================================
+    # SONARQUBE PROJECTS (The "Works")
+    # ==========================================
+    - name: Create Application Code Project in SonarQube
+      uri:
+        url: "http://127.0.0.1:9000/api/projects/create"
+        method: POST
+        user: "admin"
+        password: "admin"
+        force_basic_auth: yes
+        body_format: form-urlencoded
+        body:
+          name: "Application Code"
+          project: "app-code"  # The unique key used in Jenkinsfiles
+        status_code: [200, 201, 400] # 400 means it already exists
+      delegate_to: control_plane
+      changed_when: false
+      tags: sonar
+
+    - name: Create Infrastructure & Pipeline Project in SonarQube
+      uri:
+        url: "http://127.0.0.1:9000/api/projects/create"
+        method: POST
+        user: "admin"
+        password: "admin"
+        force_basic_auth: yes
+        body_format: form-urlencoded
+        body:
+          name: "Infrastructure & Pipelines"
+          project: "infra-code"  # The unique key used in Jenkinsfiles
+        status_code: [200, 201, 400]
+      delegate_to: control_plane
+      changed_when: false
+      tags: sonar
+
+    # ==========================================
     # JENKINS CONFIGURATION (Runs on Jenkins Host)
     # ==========================================
     - name: Render JCasC configuration

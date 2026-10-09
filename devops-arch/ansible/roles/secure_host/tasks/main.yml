@@ -1,0 +1,53 @@
+---
+- name: Update and upgrade apt packages (Security patches)
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: Install UFW and Fail2ban
+  apt:
+    name:
+      - ufw
+      - fail2ban
+    state: present
+
+- name: Ensure UFW is enabled
+  ufw:
+    state: enabled
+    policy: deny
+
+- name: Allow SSH (Port 22)
+  ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+
+- name: Allow HTTP (Port 80)
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: Allow HTTPS (Port 443)
+  ufw:
+    rule: allow
+    port: '443'
+    proto: tcp
+
+- name: Ensure Fail2ban is started and enabled
+  service:
+    name: fail2ban
+    state: started
+    enabled: yes
+
+- name: Disable SSH Password Authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+
+# Restart SSH directly instead of using a handler
+- name: Restart SSH to apply config
+  service:
+    name: ssh
+    state: restarted

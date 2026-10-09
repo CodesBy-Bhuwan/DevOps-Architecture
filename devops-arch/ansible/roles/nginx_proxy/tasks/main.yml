@@ -1,0 +1,43 @@
+---
+- name: Create internal Docker network (Isolated from internet)
+  community.docker.docker_network:
+    name: internal_net
+    internal: true
+
+- name: Create Nginx config directory
+  file:
+    path: /opt/nginx-proxy
+    state: directory
+    mode: "0755"
+
+- name: Copy Nginx config template
+  template:
+    src: nginx.conf.j2
+    dest: /opt/nginx-proxy/nginx.conf
+    mode: "0644"
+
+- name: Run Backend App Container (Internal Only)
+  community.docker.docker_container:
+    name: backend-app
+    image: nginx:alpine
+    state: started
+    restart_policy: unless-stopped
+    networks:
+      - name: internal_net
+    # Notice: No "ports" mapping! It is completely invisible to the internet.
+
+- name: Run Nginx Reverse Proxy Container (Public Entry Point)
+  community.docker.docker_container:
+    name: nginx-proxy
+    image: nginx:alpine
+    state: started
+    restart_policy: unless-stopped
+    recreate: yes
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /opt/nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - name: internal_net
+      - name: bridge

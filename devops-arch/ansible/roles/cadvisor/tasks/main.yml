@@ -1,0 +1,15 @@
+- name: Run cAdvisor Container
+  community.docker.docker_container:
+    name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "8080:8080"  # Note: On control-node, this might conflict if Jenkins uses 8080.
+    # We will use host network to avoid conflicts, or map to 9101.
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro

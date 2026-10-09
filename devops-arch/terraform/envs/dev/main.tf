@@ -39,36 +39,60 @@ module "compute" {
   k8s_master_volume_size    = var.k8s_master_volume_size
   k8s_worker_volume_size    = var.k8s_worker_volume_size
   monitoring_volume_size    = var.monitoring_volume_size
+
+  # Existing variables 
+  docker_target_instance_type = var.docker_target_instance_type
+  docker_target_volume_size   = var.docker_target_volume_size
+  docker_target_sg_id         = module.security.docker_target_sg_id
+
+  # ... existing  variables ...
+  enable_kubernetes          = var.enable_kubernetes
+  enable_docker_target       = var.enable_docker_target
+  enable_control_plane       = var.enable_control_plane
+  enable_monitoring          = var.enable_monitoring
 }
+
 ####################################################
 # Automatically generate ansible/inventory/aws.ini
 resource "local_file" "ansible_inventory" {
   filename = "${path.module}/../../../ansible/inventory/aws.ini"
   
   content = <<-EOF
+%{ if var.enable_control_plane }
 # --- DevOps Tools ---
 [jenkins]
- ${module.compute.control_plane_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+control-node ansible_host=${module.compute.control_plane_public_ip} private_ip=${module.compute.control_plane_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=terraform/envs/dev/devops-aws-key.pem
 
 [sonarqube]
- ${module.compute.control_plane_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+control-node ansible_host=${module.compute.control_plane_public_ip} private_ip=${module.compute.control_plane_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=terraform/envs/dev/devops-aws-key.pem
+%{ endif }
 
+%{ if var.enable_monitoring }
 [nexus]
- ${module.compute.monitoring_ops_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+monitoring-node ansible_host=${module.compute.monitoring_ops_public_ip} private_ip=${module.compute.monitoring_ops_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=terraform/envs/dev/devops-aws-key.pem
 
 [prometheus]
- ${module.compute.monitoring_ops_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+monitoring-node ansible_host=${module.compute.monitoring_ops_public_ip} private_ip=${module.compute.monitoring_ops_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=terraform/envs/dev/devops-aws-key.pem
 
 [grafana]
- ${module.compute.monitoring_ops_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+monitoring-node ansible_host=${module.compute.monitoring_ops_public_ip} private_ip=${module.compute.monitoring_ops_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=terraform/envs/dev/devops-aws-key.pem
+%{ endif }
 
+%{ if var.enable_kubernetes }
 # --- Kubernetes ---
 [k8s_master]
- ${module.compute.k8s_master_public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+k8s-master ansible_host=${module.compute.k8s_master_public_ip} private_ip=${module.compute.k8s_master_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=terraform/envs/dev/devops-aws-key.pem
 
 [k8s_workers]
-%{ for ip in module.compute.k8s_workers_public_ips ~}
- ${ip} ansible_user=ubuntu ansible_ssh_private_key_file=${path.module}/devops-aws-key.pem
+%{ for i, ip in module.compute.k8s_workers_public_ips ~}
+k8s-worker-${i + 1} ansible_host=${ip} private_ip=${module.compute.k8s_workers_private_ips[i]} ansible_user=ubuntu ansible_ssh_private_key_file=terraform/envs/dev/devops-aws-key.pem
 %{ endfor ~}
+%{ endif }
+
+%{ if var.enable_docker_target }
+# --- Deployment Target ---
+[docker_target]
+deploy-node ansible_host=${module.compute.docker_target_public_ip} private_ip=${module.compute.docker_target_private_ip} ansible_user=ubuntu ansible_ssh_private_key_file=terraform/envs/dev/devops-aws-key.pem
+%{ endif }
   EOF
 }

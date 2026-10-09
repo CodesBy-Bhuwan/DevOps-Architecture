@@ -1,0 +1,8 @@
+#To avoid port conflicts with Jenkins, let's map cAdvisor to port `9101` instead. Change the ports section to `- "9101:8080"`
+
+---
+- name: Deploy cAdvisor
+  hosts: all
+  become: yes
+  roles:
+    - cadvisor
