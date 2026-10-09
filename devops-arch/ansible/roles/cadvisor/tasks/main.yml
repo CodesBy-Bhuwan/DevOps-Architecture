@@ -4,8 +4,9 @@
     image: gcr.io/cadvisor/cadvisor:v0.49.1
     state: started
     restart_policy: unless-stopped
+    recreate: yes
     ports:
-      - "8080:8080"  # Note: On control-node, this might conflict if Jenkins uses 8080.
+      - "9101:8080"  # Note: On control-node, this might conflict if Jenkins uses 8080.
     # We will use host network to avoid conflicts, or map to 9101.
     volumes:
       - /:/rootfs:ro

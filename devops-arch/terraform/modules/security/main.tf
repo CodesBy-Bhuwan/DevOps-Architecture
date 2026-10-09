@@ -40,6 +40,12 @@ resource "aws_security_group" "control_plane" {
     protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/16"] # Only allow VPC internal traffic
   }
+  ingress {
+    from_port   = 9101
+    to_port     = 9101
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"] # Allow internal VPC traffic
+  }
     ingress {
     from_port   = 8081
     to_port     = 8081
@@ -89,6 +95,12 @@ resource "aws_security_group" "k8s" {
     to_port     = 9100
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 9101
+    to_port     = 9101
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"] # Allow internal VPC traffic
   }
   ingress {
     from_port   = 9100
@@ -158,6 +170,12 @@ resource "aws_security_group" "monitoring" {
     protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/16"] # Only allow VPC internal traffic
   }
+  ingress {
+    from_port   = 9101
+    to_port     = 9101
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"] # Allow internal VPC traffic
+  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -192,6 +210,12 @@ resource "aws_security_group" "docker_target" {
     to_port     = 9100
     protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/16"] # Prometheus internal traffic
+  }
+  ingress {
+    from_port   = 9101
+    to_port     = 9101
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"] # Allow internal VPC traffic
   }
   
 # Nginx HTTPS

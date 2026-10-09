@@ -9,53 +9,100 @@
         dest: /opt/prometheus/prometheus.yml
 
     # ADD THIS TASK TO CREATE THE DIRECTORY!
-    - name: Ensure Grafana provisioning directory exists
+    # ==========================================
+    # GRAFANA DASHBOARD PROVISIONING
+    # ==========================================
+    - name: Ensure Dashboards directory exists
       file:
-        path: /opt/grafana/provisioning/datasources
+        path: /opt/grafana/dashboards
         state: directory
         mode: "0755"
-
-    - name: Render Grafana datasources configuration
-      template:
-        src: ../roles/grafana/templates/datasources.yml.j2
-        dest: /opt/grafana/provisioning/datasources/datasources.yml
-
-    - name: Restart Prometheus to load scrape config
-      command: docker restart prometheus
-      changed_when: false
-
-    - name: Restart Grafana to load datasources
-      command: docker restart grafana
-      changed_when: false
 
     - name: Render Grafana dashboards provisioning config
       template:
         src: ../roles/grafana/templates/dashboards.yml.j2
         dest: /opt/grafana/provisioning/dashboards/dashboards.yml
 
-    - name: Download Server Metrics Dashboard (Node Exporter)
+    # 1. Infrastructure - Servers (Node Exporter) - Shows CPU, RAM, Disk, IP traffic
+    - name: Download Node Exporter Full Dashboard (ID 1860)
       get_url:
         url: "https://grafana.com/api/dashboards/1860/revisions/37/download"
-        dest: /opt/grafana/dashboards/node-exporter.json
+        dest: /opt/grafana/dashboards/node-exporter-full.json
         mode: '0644'
 
-    - name: Download Container Metrics Dashboard (cAdvisor)
+    # 2. Infrastructure - Network Details (IPs, Ports, Interfaces)
+    - name: Download Network Details Dashboard (ID 13518)
       get_url:
-        url: "https://grafana.com/api/dashboards/193/revisions/2/download"
+        url: "https://grafana.com/api/dashboards/13518/revisions/1/download"
+        dest: /opt/grafana/dashboards/network-details.json
+        mode: '0644'
+
+    # 3. Infrastructure - Containers (cAdvisor) - Shows RAM/CPU per container
+    - name: Download cAdvisor Dashboard (ID 14282)
+      get_url:
+        url: "https://grafana.com/api/dashboards/14282/revisions/1/download"
         dest: /opt/grafana/dashboards/cadvisor.json
         mode: '0644'
 
-    - name: Download Logs Dashboard (Loki)
+    # 4. Infrastructure - Docker Engine
+    - name: Download Docker Dashboard (ID 1150)
+      get_url:
+        url: "https://grafana.com/api/dashboards/1150/revisions/2/download"
+        dest: /opt/grafana/dashboards/docker-engine.json
+        mode: '0644'
+
+    # 5. Logs - Loki (Search and tail container logs)
+    - name: Download Loki Logs Dashboard (ID 13639)
       get_url:
         url: "https://grafana.com/api/dashboards/13639/revisions/2/download"
         dest: /opt/grafana/dashboards/loki-logs.json
         mode: '0644'
 
-    - name: Download Jenkins Dashboard
+    # 6. Logs - Promtail Health
+    - name: Download Promtail Dashboard (ID 13779)
+      get_url:
+        url: "https://grafana.com/api/dashboards/13779/revisions/1/download"
+        dest: /opt/grafana/dashboards/promtail.json
+        mode: '0644'
+
+    # 7. CI/CD - Jenkins (Build stats, executor status)
+    - name: Download Jenkins Dashboard (ID 9964)
       get_url:
         url: "https://grafana.com/api/dashboards/9964/revisions/1/download"
         dest: /opt/grafana/dashboards/jenkins.json
         mode: '0644'
+
+    # 8. Kubernetes - Cluster Overview (Ready for future K8s bootstrapping)
+    - name: Download Kubernetes Cluster Dashboard (ID 15760)
+      get_url:
+        url: "https://grafana.com/api/dashboards/15760/revisions/37/download"
+        dest: /opt/grafana/dashboards/kubernetes-cluster.json
+        mode: '0644'
+
+    # ==========================================
+    # FIX DASHBOARD VARIABLES (Map to Data Sources)
+    # ==========================================
+    - name: Fix Prometheus Data Source Variable in Dashboards
+      replace:
+        path: "/opt/grafana/dashboards/{{ item }}"
+        regexp: '\$\{DS_PROMETHEUS\}'
+        replace: 'Prometheus'
+      loop:
+        - node-exporter-full.json
+        - network-details.json
+        - cadvisor.json
+        - docker-engine.json
+        - promtail.json
+        - jenkins.json
+        - kubernetes-cluster.json
+      ignore_errors: yes
+
+    - name: Fix Loki Data Source Variable in Loki Dashboard
+      replace:
+        path: "/opt/grafana/dashboards/loki-logs.json"
+        regexp: '\$\{DS_LOKI\}'
+        replace: 'Loki'
+      ignore_errors: yes
 
     - name: Restart Grafana to load dashboards
       command: docker restart grafana
