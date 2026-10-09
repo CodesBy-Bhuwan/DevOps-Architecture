@@ -1,0 +1,6 @@
+---
+- name: Deploy Nginx Reverse Proxy and Internal App
+  hosts: docker_target
+  become: true
+  roles:
+    - nginx_proxy

@@ -1,0 +1,6 @@
+---
+- name: Secure and Harden the Docker Target Host
+  hosts: docker_target
+  become: yes
+  roles:
+    - secure_host

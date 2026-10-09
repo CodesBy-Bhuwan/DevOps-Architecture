@@ -172,6 +172,7 @@ resource "aws_security_group" "docker_target" {
   description = "Allow SSH, Node Exporter, and Web Ports"
   vpc_id      = var.vpc_id
 
+ # SSH
   ingress {
     from_port   = 22
     to_port     = 22
@@ -192,11 +193,33 @@ resource "aws_security_group" "docker_target" {
     protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/16"] # Prometheus internal traffic
   }
+  
+# Nginx HTTPS
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Nginx HTTP
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = "${var.environment}-docker_target_sg"
+    Environment = var.environment
+    Role        = "docker-target"
   }
 }

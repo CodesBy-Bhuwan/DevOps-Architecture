@@ -79,3 +79,10 @@ monitoring-setup:
 
 argocd:
 	$(ANSIBLE) $(PLAYBOOK)/argocd.yml
+
+
+secure-host:
+	$(ANSIBLE) $(PLAYBOOK)/secure-host.yml
+
+nginx-proxy:
+	$(ANSIBLE) $(PLAYBOOK)/nginx-proxy.yml
