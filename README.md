@@ -135,10 +135,11 @@ Developers choose their target via a **Jenkins choice parameter**:
 > **Ready to dive deeper?**  
 > Explore the full implementation, including Terraform modules, Ansible playbooks, Jenkins pipelines, and Kubernetes manifests on the
 >
-> https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZW9xbTVmbmJyOXpja2d6M2l2MDN6dWptdzI3NGd2d2FpNGp6NTZycSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yC9g3FhMIdmotdtvuP/giphy.gif
+> ![DevOps Architecture GIF](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZW9xbTVmbmJyOXpja2d6M2l2MDN6dWptdzI3NGd2d2FpNGp6NTZycSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yC9g3FhMIdmotdtvuP/giphy.gif)
 >
-> [GenF1 branch](https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1).
-
+> <br>
+>
+> <a href="https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; background-color: #0366d6; text-align: center; text-decoration: none; border-radius: 6px; font-weight: bold;">🚀 Explore the GenF1 Branch</a>
 ---
 
 <p align="center">
