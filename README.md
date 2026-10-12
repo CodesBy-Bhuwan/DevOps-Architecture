@@ -130,7 +130,7 @@ Developers choose their target via a **Jenkins choice parameter**:
 ## 🔗 Connect & Explore
 
 [![GitHub](https://img.shields.io/badge/GitHub-CodesBy--Bhuwan-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/CodesBy-Bhuwan)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bhuwan-bhatta/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/bhuwan-bhatta/](https://www.linkedin.com/in/codesbybhuwan/?isSelfProfile=true))
 
 > **Ready to dive deeper?**  
 > Explore the full implementation, including Terraform modules, Ansible playbooks, Jenkins pipelines, and Kubernetes manifests on the [GenF1 branch](https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1).
