@@ -1,3 +1,17 @@
+
+
+
+<div align="center">
+  <a href="https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1">
+    <img src="devops-arch/arch-diagrams/screenshots/discover-project-transparent.png" alt="Discover the project" width="250">
+
+    Click Here to Get to Actual Infrastructure!
+  </a>
+</div>
+
+
+
+
 # 🏗️ Enterprise DevOps Platform Infrastructure
 
 [![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
@@ -20,14 +34,16 @@ This project demonstrates a complete enterprise-grade DevOps ecosystem: from aut
 
 ## 📑 Table of Contents
 
-- [✨ Key Highlights](#-key-highlights)
-- [☁️ Cloud Infrastructure (AWS)](#️-cloud-infrastructure-aws)
-- [⚙️ Automation & IaC](#️-automation--iac)
-- [🔒 Security & RBAC](#-security--rbac)
-- [📈 Observability Stack](#-observability-stack)
-- [🚀 Deployment Architecture (The "Golden Path")](#-deployment-architecture-the-golden-path)
-- [📸 Infrastructure Screenshots](#-infrastructure-screenshots)
-- [🔗 Connect & Explore](#-connect--explore)
+- [🏗️ Enterprise DevOps Platform Infrastructure](#️-enterprise-devops-platform-infrastructure)
+  - [📑 Table of Contents](#-table-of-contents)
+  - [✨ Key Highlights](#-key-highlights)
+  - [☁️ Cloud Infrastructure (AWS)](#️-cloud-infrastructure-aws)
+  - [⚙️ Automation \& IaC](#️-automation--iac)
+  - [🔒 Security \& RBAC](#-security--rbac)
+  - [📈 Observability Stack](#-observability-stack)
+  - [🚀 Deployment Architecture (The "Golden Path")](#-deployment-architecture-the-golden-path)
+  - [📸 Infrastructure Screenshots](#-infrastructure-screenshots)
+  - [🔗 Connect \& Explore](#-connect--explore)
 
 ---
 
@@ -134,7 +150,8 @@ Developers choose their target via a **Jenkins choice parameter**:
 
 <div align="center">
   <p>
-    <b>Ready to dive deeper?</b><br>
+    <b>Ready to dive deeper?</b>
+    <br>
     Explore the full implementation, including Terraform modules, Ansible playbooks, Jenkins pipelines, and Kubernetes manifests.
   </p>
   
@@ -143,12 +160,17 @@ Developers choose their target via a **Jenkins choice parameter**:
   
   <br><br>
   
-  <a href="https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1" style="display: inline-block; padding: 14px 28px; font-size: 18px; font-weight: bold; color: #ffffff; background-color: #2ea44f; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: background-color 0.3s ease;">
-    🚀 Explore the GenF1 Branch
+
+<div align="center">
+  <a href="https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1">
+    <img src="devops-arch/arch-diagrams/screenshots/discover-project-transparent.png" alt="Discover the project" width="250">            
+
+    Click Here to Get to Actual Infrastructure!
   </a>
-  
-  <br><br>
 </div>
+<br>
+</div>
+
 ---
 
 <p align="center">
