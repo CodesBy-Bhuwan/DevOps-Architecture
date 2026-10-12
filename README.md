@@ -1,64 +1,142 @@
-#  🌟 ENd-to-ENd Hybrid InfraStructure 🌟
-# 🏗️ Enterprise DevOps Platform
+# 🏗️ Enterprise DevOps Platform Infrastructure
 
-This project is a fully automated, production-ready DevOps platform hosted on AWS. It is designed using Infrastructure as Code (IaC) and Configuration as Code (CaC) principles to provide a scalable, secure, and observable environment for deploying modern applications (like the MERN stack).
+[![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
+[![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)](https://www.terraform.io/)
+[![Ansible](https://img.shields.io/badge/Ansible-EE0000?style=for-the-badge&logo=ansible&logoColor=white)](https://www.ansible.com/)
+[![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white)](https://www.jenkins.io/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)](https://prometheus.io/)
+[![Grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white)](https://grafana.com/)
+[![Loki](https://img.shields.io/badge/Loki-2C3E50?style=for-the-badge&logo=grafana&logoColor=white)](https://grafana.com/oss/loki/)
+[![Nexus](https://img.shields.io/badge/Nexus-1B1C20?style=for-the-badge&logo=sonatype&logoColor=white)](https://www.sonatype.com/nexus-repository)
+[![SonarQube](https://img.shields.io/badge/SonarQube-4E9BCD?style=for-the-badge&logo=sonarqube&logoColor=white)](https://www.sonarqube.org/)
 
-The platform features a dual-deployment "Golden Path" (supporting both standard Docker and Kubernetes GitOps), automated Role-Based Access Control (RBAC), and a complete observability stack (Metrics, Logs, and Dashboards).
+> A fully automated, production-ready DevOps platform on AWS — built with **Infrastructure as Code**, **Configuration as Code**, and a **dual-deployment Golden Path** (Docker & Kubernetes GitOps).
+
+This project demonstrates a complete enterprise-grade DevOps ecosystem: from automated cloud provisioning and host hardening to CI/CD orchestration, security, and full-stack observability. It’s designed to deploy modern applications (like the MERN stack) with zero manual intervention and zero hardcoded secrets.
+
+---
+
+## 📑 Table of Contents
+
+- [✨ Key Highlights](#-key-highlights)
+- [☁️ Cloud Infrastructure (AWS)](#️-cloud-infrastructure-aws)
+- [⚙️ Automation & IaC](#️-automation--iac)
+- [🔒 Security & RBAC](#-security--rbac)
+- [📈 Observability Stack](#-observability-stack)
+- [🚀 Deployment Architecture (The "Golden Path")](#-deployment-architecture-the-golden-path)
+- [📸 Infrastructure Screenshots](#-infrastructure-screenshots)
+- [🔗 Connect & Explore](#-connect--explore)
+
+---
+
+## ✨ Key Highlights
+
+- **One-command provisioning** with Terraform — toggles for K8s and Docker to keep costs at $0 when idle.
+- **Zero-touch configuration** via Ansible, JCasC, and REST APIs — no manual SSH, no hardcoded passwords.
+- **Dual deployment paths** — standard Docker or Kubernetes GitOps (ArgoCD) chosen directly from Jenkins.
+- **Least-privilege networking** — Nginx reverse proxy, isolated Docker networks, UFW, Fail2ban, SSH key-only.
+- **Automated RBAC** across Jenkins, SonarQube, and Nexus with matrix-based permissions.
+- **Single pane of glass** observability — Prometheus, Loki, Grafana with auto-provisioned dashboards.
+
+---
 
 ## ☁️ Cloud Infrastructure (AWS)
 
-The platform is provisioned in the `eu-north-1` (Stockholm) region using Terraform to optimize for cost and performance. It consists of 6 EC2 instances across a custom, isolated VPC:
+Provisioned in **`eu-north-1` (Stockholm)** using Terraform for optimal cost and performance. The platform runs on **6 EC2 instances** inside a custom, isolated VPC.
 
-1.  **Control Plane (t3.large):** The CI/CD engine. Hosts Jenkins (orchestration) and SonarQube (static code analysis).
-2.  **Monitoring & Ops (t3.medium):** The observability and artifact hub. Hosts Nexus (Docker registry), Prometheus, Grafana, and Loki.
-3.  **Kubernetes Master (t3.large):** The K8s control plane (ready for ArgoCD/GitOps).
-4.  **Kubernetes Workers (t3.medium x2):** Application workload nodes for K8s deployments.
-5.  **Docker Target (t3.medium):** A hardened deployment node for standard Docker applications, featuring an Nginx Reverse Proxy and isolated internal networks.
+| Instance | Type | Role |
+|----------|------|------|
+| **Control Plane** | `t3.large` | CI/CD engine — Jenkins (orchestration) & SonarQube (static analysis). |
+| **Monitoring & Ops** | `t3.medium` | Observability & artifact hub — Nexus, Prometheus, Grafana, Loki. |
+| **Kubernetes Master** | `t3.large` | K8s control plane (ArgoCD / GitOps ready). |
+| **Kubernetes Workers** | `t3.medium` ×2 | Application workload nodes for K8s deployments. |
+| **Docker Target** | `t3.medium` | Hardened Docker deployment node — Nginx Reverse Proxy + isolated networks. |
+
+---
 
 ## ⚙️ Automation & IaC
 
-- **Terraform:** Provisions the VPC, subnets, Security Groups, and EC2 instances. It features **Infrastructure Toggles** (`ENABLE_K8S`, `ENABLE_DOCKER`) to turn servers on/off individually, dropping the AWS bill to $0 when not in use. It auto-generates SSH keys and dynamically writes the Ansible inventory file.
-- **Ansible:** Configures the 6 servers without manual SSH. It uses **JCasC** (Jenkins Configuration as Code) to automate RBAC users, and hits REST APIs to automate Nexus and SonarQube user/service account creation. Zero hardcoded passwords exist in the repository.
+- **Terraform**
+  - Provisions VPC, subnets, Security Groups, and EC2 instances.
+  - **Infrastructure Toggles** (`ENABLE_K8S`, `ENABLE_DOCKER`) allow individual server on/off — AWS bill drops to $0 when idle.
+  - Auto-generates SSH keys and dynamically writes the Ansible inventory.
+
+- **Ansible**
+  - Configures all 6 servers with no manual SSH.
+  - Uses **JCasC** (Jenkins Configuration as Code) to automate RBAC users.
+  - Hits REST APIs to automate Nexus and SonarQube user/service account creation.
+  - **Zero hardcoded passwords** in the repository.
+
+---
 
 ## 🔒 Security & RBAC
 
-- **Least Privilege Network:** The Docker Target node runs an Nginx Reverse Proxy as the only public entry point (Ports 80/443). Backend apps are hidden on an isolated `internal_net` Docker network.
-- **Host Hardening:** The deployment node is secured with **UFW** (Firewall), **Fail2ban** (Brute-force protection), and SSH key-only authentication.
-- **RBAC:** Jenkins, SonarQube, and Nexus all feature automated Role-Based Access Control (`admin`, `dev`, `tester`, `jrdevops`) with strict matrix permissions. A dedicated `jenkins-ci` service account is used for tool-to-tool integration.
+- **Least Privilege Network** — The Docker Target node runs an Nginx Reverse Proxy as the only public entry point (Ports 80/443). Backend apps live on an isolated `internal_net` Docker network.
+- **Host Hardening** — UFW (Firewall), Fail2ban (Brute-force protection), and SSH key-only authentication on the deployment node.
+- **RBAC** — Jenkins, SonarQube, and Nexus all feature automated Role-Based Access Control (`admin`, `dev`, `tester`, `jrdevops`) with strict matrix permissions.
+- A dedicated `jenkins-ci` service account is used for tool-to-tool integration.
+
+---
 
 ## 📈 Observability Stack
 
-The platform provides a "single pane of glass" view of all metrics and logs:
+A true **“single pane of glass”** for metrics, logs, and dashboards:
 
-- **Metrics (Prometheus & Node Exporter/cAdvisor):** Scrapes hardware and per-container metrics from all 6 servers using AWS Private IPs to bypass network routing issues.
-- **Logs (Loki & Promtail):** Promtail uses Docker Service Discovery to automatically tail all container logs and ship them to Loki.
-- **Visualization (Grafana):** Auto-provisioned with Prometheus and Loki data sources. Dashboards are downloaded and patched via Ansible, providing instant visibility into CPU, RAM, network traffic, and container health without manual UI configuration.
+- **Metrics** — Prometheus & Node Exporter/cAdvisor scrape hardware and per-container metrics from all 6 servers using AWS Private IPs (bypasses routing issues).
+- **Logs** — Loki & Promtail use Docker Service Discovery to automatically tail all container logs and ship them to Loki.
+- **Visualization** — Grafana is auto-provisioned with Prometheus and Loki data sources. Dashboards are downloaded and patched via Ansible — instant visibility into CPU, RAM, network traffic, and container health **without manual UI configuration**.
+
+---
 
 ## 🚀 Deployment Architecture (The "Golden Path")
 
-Developers can choose their deployment target via a Jenkins choice parameter:
+Developers choose their target via a **Jenkins choice parameter**:
 
-- **Docker Path:** Jenkins builds the image, pushes to Nexus, and deploys behind the Nginx Reverse Proxy on the Docker Target node.
-- **Kubernetes Path:** Jenkins builds the image, pushes to Nexus, and triggers ArgoCD to sync the deployment to the K8s cluster (GitOps).
+- **Docker Path** — Jenkins builds the image, pushes to Nexus, and deploys behind the Nginx Reverse Proxy on the Docker Target node.
+- **Kubernetes Path** — Jenkins builds the image, pushes to Nexus, and triggers ArgoCD to sync the deployment to the K8s cluster (GitOps).
 
+---
 
+## 📸 Infrastructure Screenshots
 
-# [🚨 How this infra behave? 🚨](https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1)
-
-
-[![INFRASTRUCTURE](https://img.shields.io/badge/🏗️INFRA-STRUCTURE-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1)
-
-
-
-### [🖧 Infra-Servers](https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1)
-
+<details>
+<summary><strong>🖧 Infra Servers</strong> — all working nodes</summary>
+<br>
 <img title="Servers" alt="All-Working Servers" src="devops-arch/arch-diagrams/screenshots/Screenshot from 2026-10-09 16-36-50Ss.png">
+</details>
 
-### [🚦 Infra-Status](https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1)
+<details>
+<summary><strong>🚦 Infra Status</strong> — terminal status</summary>
+<br>
 <img title="Terminal" alt="Status on terminal" src="devops-arch/arch-diagrams/screenshots/Screenshot from 2026-10-09 16-48-41Ss.png">
+</details>
 
-### [📊 Infra-DashBoards](https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1) 
+<details>
+<summary><strong>📊 Infra Dashboards</strong> — Grafana dashboards</summary>
+<br>
 <img title="Possible Dashboards" alt="Grafana dashboards" src="devops-arch/arch-diagrams/screenshots/Screenshot from 2026-10-09 16-38-46Ss.png">
+</details>
 
-### [📈 Infra-Metics](https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1) 
-<img title="Graphs" alt="Grafana data usuage" src="devops-arch/arch-diagrams/screenshots/Screenshot from 2026-10-09 16-32-58Ss.png">
+<details>
+<summary><strong>📈 Infra Metrics</strong> — Grafana data usage</summary>
+<br>
+<img title="Graphs" alt="Grafana data usage" src="devops-arch/arch-diagrams/screenshots/Screenshot from 2026-10-09 16-32-58Ss.png">
+</details>
+
+---
+
+## 🔗 Connect & Explore
+
+[![GitHub](https://img.shields.io/badge/GitHub-CodesBy--Bhuwan-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/CodesBy-Bhuwan)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bhuwan-bhatta/)
+
+> **Ready to dive deeper?**  
+> Explore the full implementation, including Terraform modules, Ansible playbooks, Jenkins pipelines, and Kubernetes manifests on the [GenF1 branch](https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1).
+
+---
+
+<p align="center">
+  <em>Built with ❤️ for scalable, secure, and observable infrastructure.</em>
+</p>
