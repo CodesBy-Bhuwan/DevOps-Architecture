@@ -122,7 +122,7 @@ Developers choose their target via a **Jenkins choice parameter**:
 <details>
 <summary><strong>📈 Infra Metrics</strong> — Grafana data usage</summary>
 <br>
-<img title="Graphs" alt="Grafana data usage" src="devops-arch/arch-diagrams/screenshots/Screenshot from 2026-10-09 16-32-58Ss.png">
+<img title="Graphs" alt="Grafana data usuage" src="devops-arch/arch-diagrams/screenshots/Screenshot from 2026-10-09 16-32-58Ss.png">
 </details>
 
 ---
