@@ -132,14 +132,23 @@ Developers choose their target via a **Jenkins choice parameter**:
 [![GitHub](https://img.shields.io/badge/GitHub-CodesBy--Bhuwan-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/CodesBy-Bhuwan)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/codesbybhuwan/?isSelfProfile=true)
 
-> **Ready to dive deeper?**  
-> Explore the full implementation, including Terraform modules, Ansible playbooks, Jenkins pipelines, and Kubernetes manifests on the
->
-> ![DevOps Architecture GIF](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZW9xbTVmbmJyOXpja2d6M2l2MDN6dWptdzI3NGd2d2FpNGp6NTZycSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yC9g3FhMIdmotdtvuP/giphy.gif)
->
-> <br>
->
-> <a href="https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #ffffff; background-color: #0366d6; text-align: center; text-decoration: none; border-radius: 6px; font-weight: bold;">🚀 Explore the GenF1 Branch</a>
+<div align="center">
+  <p>
+    <b>Ready to dive deeper?</b><br>
+    Explore the full implementation, including Terraform modules, Ansible playbooks, Jenkins pipelines, and Kubernetes manifests.
+  </p>
+  
+
+  <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZW9xbTVmbmJyOXpja2d6M2l2MDN6dWptdzI3NGd2d2FpNGp6NTZycSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yC9g3FhMIdmotdtvuP/giphy.gif" alt="DevOps Architecture" width="700">
+  
+  <br><br>
+  
+  <a href="https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1" style="display: inline-block; padding: 14px 28px; font-size: 18px; font-weight: bold; color: #ffffff; background-color: #2ea44f; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: background-color 0.3s ease;">
+    🚀 Explore the GenF1 Branch
+  </a>
+  
+  <br><br>
+</div>
 ---
 
 <p align="center">
