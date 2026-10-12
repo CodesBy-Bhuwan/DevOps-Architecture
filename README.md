@@ -1,16 +1,12 @@
-
-
-
 <div align="center">
   <a href="https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1">
     <img src="devops-arch/arch-diagrams/screenshots/discover-project-transparent.png" alt="Discover the project" width="250">
-
-    Click Here to Get to Actual Infrastructure!
+    <br>
+    <strong>👉 Click Here to Get to Actual Infrastructure! 👈</strong>
   </a>
 </div>
 
-
-
+<br>
 
 # 🏗️ Enterprise DevOps Platform Infrastructure
 
@@ -163,13 +159,13 @@ Developers choose their target via a **Jenkins choice parameter**:
 
 <div align="center">
   <a href="https://github.com/CodesBy-Bhuwan/DevOps-Architecture/tree/GenF1">
-    <img src="devops-arch/arch-diagrams/screenshots/discover-project-transparent.png" alt="Discover the project" width="250">            
-
-    Click Here to Get to Actual Infrastructure!
+    <img src="devops-arch/arch-diagrams/screenshots/discover-project-transparent.png" alt="Discover the project" width="250">
+    <br>
+    <strong>👉 Click Here to Get to Actual Infrastructure! 👈</strong>
   </a>
 </div>
+
 <br>
-</div>
 
 ---
 
