@@ -1,0 +1,6 @@
+---
+- name: Install Alloy on all servers (except monitoring? Actually including it)
+  hosts: all
+  become: yes
+  roles:
+    - alloy

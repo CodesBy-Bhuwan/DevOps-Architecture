@@ -1,0 +1,15 @@
+{
+  "metrics-addr": "0.0.0.0:9323",
+  "experimental": true,
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  },
+  "storage-driver": "overlay2"
+{% if groups['control_plane'] and inventory_hostname in groups['control_plane'] %}
+  ,"insecure-registries": [
+    "{{ hostvars[groups['monitoring_ops'][0]].ansible_host }}:8082"
+  ]
+{% endif %}
+}

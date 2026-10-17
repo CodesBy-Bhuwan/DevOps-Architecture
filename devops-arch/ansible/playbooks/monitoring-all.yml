@@ -1,0 +1,136 @@
+---
+- name: Complete Monitoring Stack Setup
+  hosts: all
+  become: yes
+  tasks:
+    - name: Display monitoring setup information
+      debug:
+        msg: |
+          🚀 Starting complete monitoring stack installation...
+          📊 Components:
+          - Prometheus (metrics collection)
+          - AlertManager (alerting with email)
+          - Loki (log aggregation)
+          - Promtail (log collection)
+          - Grafana (visualization)
+          
+          📧 Alert emails will be sent to: {{ lookup('env', 'ALERT_EMAIL') | default('team@example.com') }}
+          📧 SMTP Server: {{ lookup('env', 'SMTP_HOST') | default('smtp.gmail.com') }}:{{ lookup('env', 'SMTP_PORT') | default(587) }}
+
+- name: Setup Docker metrics on all nodes
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure Docker daemon exposes metrics
+      lineinfile:
+        path: /etc/docker/daemon.json
+        regexp: '"metrics-addr"'
+        insertafter: '{'
+        line: '  "metrics-addr": "0.0.0.0:9323",'
+        create: yes
+      notify: restart docker
+
+    - name: Ensure insecure registry config
+      lineinfile:
+        path: /etc/docker/daemon.json
+        regexp: '"insecure-registries"'
+        insertafter: '{'
+        line: '  "insecure-registries": ["{{ hostvars[''monitoring_ops''].ansible_host }}:8082"],'
+        create: yes
+      notify: restart docker
+
+  handlers:
+    - name: restart docker
+      systemd:
+        name: docker
+        state: restarted
+
+- name: Setup Prometheus and Grafana
+  hosts: monitoring_ops
+  become: yes
+  roles:
+    - prometheus
+    - grafana
+
+- name: Setup AlertManager with email
+  hosts: monitoring_ops
+  become: yes
+  vars:
+    alert_receiver_email: "{{ lookup('env', 'ALERT_EMAIL') | default('team@example.com') }}"
+    smtp_host: "{{ lookup('env', 'SMTP_HOST') | default('smtp.gmail.com') }}"
+    smtp_port: "{{ lookup('env', 'SMTP_PORT') | default(587) }}"
+    smtp_auth_username: "{{ lookup('env', 'SMTP_AUTH_USERNAME') | default('') }}"
+    smtp_auth_password: "{{ lookup('env', 'SMTP_AUTH_PASSWORD') | default('') }}"
+  roles:
+    - alertmanager
+
+- name: Setup Loki on monitoring node
+  hosts: monitoring_ops
+  become: yes
+  roles:
+    - loki
+
+- name: Setup Promtail on all nodes
+  hosts: all
+  become: yes
+  roles:
+    - promtail
+
+- name: Final verification and access information
+  hosts: monitoring_ops
+  become: yes
+  tasks:
+    - name: Wait for services to be ready
+      wait_for:
+        port: "{{ item }}"
+        host: "{{ ansible_host }}"
+        timeout: 120
+        delay: 5
+      loop:
+        - 9090  # Prometheus
+        - 9093  # AlertManager
+        - 3000  # Grafana
+        - 3100  # Loki
+      ignore_errors: yes
+
+    - name: Test AlertManager API
+      uri:
+        url: "http://{{ ansible_host }}:9093/api/v2/status"
+        status_code: 200
+      register: alertmanager_status
+      retries: 10
+      delay: 5
+
+    - name: Display access information
+      debug:
+        msg: |
+          ✅✅✅ MONITORING STACK IS READY! ✅✅✅
+          
+          🔗 Access URLs:
+          ─────────────────────
+          📊 Prometheus:    http://{{ ansible_host }}:9090
+          🔔 AlertManager:  http://{{ ansible_host }}:9093
+          📈 Grafana:       http://{{ ansible_host }}:3000 (admin/admin)
+          📋 Loki:          http://{{ ansible_host }}:3100
+          
+          📧 AlertManager Configuration:
+          ─────────────────────────────
+          Email Receiver: {{ lookup('env', 'ALERT_EMAIL') | default('team@example.com') }}
+          SMTP Server:    {{ lookup('env', 'SMTP_HOST') | default('smtp.gmail.com') }}:{{ lookup('env', 'SMTP_PORT') | default(587) }}
+          SMTP Username:  {{ lookup('env', 'SMTP_AUTH_USERNAME') | default('Not configured') }}
+          
+          🧪 Testing AlertManager:
+          ──────────────────────
+          To test alerts, run:
+            make monitoring-test-alert
+          
+          Or manually stop node_exporter:
+            ssh ubuntu@<worker-ip> 'sudo systemctl stop node_exporter'
+          
+          📊 Pre-configured Grafana Dashboards:
+          ─────────────────────────────────────
+          - Node Exporter Full (1860)
+          - Jenkins (9964)
+          - Loki (15117)
+          
+          💡 After login to Grafana, these dashboards will be auto-imported.

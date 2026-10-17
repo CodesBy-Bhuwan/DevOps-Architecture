@@ -1,0 +1,95 @@
+---
+- name: Setup Promtail on all nodes
+  hosts: all
+  become: yes
+  roles:
+    - promtail
+
+---
+- name: Install Promtail on all servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install unzip
+      apt:
+        name: unzip
+        state: present
+        update_cache: yes
+
+    - name: Create promtail user
+      user:
+        name: promtail
+        system: yes
+        shell: /bin/false
+        createhome: no
+
+    - name: Create promtail directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0755
+        owner: promtail
+        group: promtail
+      loop:
+        - /etc/promtail
+        - /var/lib/promtail
+
+    - name: Download Promtail
+      get_url:
+        url: "https://github.com/grafana/loki/releases/download/v2.9.4/promtail-linux-amd64.zip"
+        dest: /tmp/promtail.zip
+        timeout: 120
+
+    - name: Extract Promtail
+      unarchive:
+        src: /tmp/promtail.zip
+        dest: /tmp/
+        remote_src: yes
+        creates: /tmp/promtail-linux-amd64
+
+    - name: Install Promtail binary
+      copy:
+        src: "/tmp/promtail-linux-amd64"
+        dest: "/usr/local/bin/promtail"
+        mode: 0755
+        remote_src: yes
+
+    - name: Create Promtail config
+      template:
+        src: promtail-config.yml.j2
+        dest: /etc/promtail/promtail-config.yml
+        mode: 0644
+
+    - name: Create Promtail systemd service
+      template:
+        src: promtail.service.j2
+        dest: /etc/systemd/system/promtail.service
+        mode: 0644
+
+    - name: Start and enable Promtail
+      systemd:
+        name: promtail
+        state: started
+        enabled: yes
+        daemon_reload: yes
+
+    - name: Wait for Promtail to be ready
+      wait_for:
+        port: 9080
+        host: "localhost"
+        timeout: 30
+      ignore_errors: yes
+
+    - name: Cleanup
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /tmp/promtail.zip
+        - /tmp/promtail-linux-amd64
+
+    - name: Display Promtail status
+      debug:
+        msg: |
+          ✅ Promtail is running on {{ ansible_host }}
+          Sending logs to: http://{{ hostvars[groups['monitoring_ops'][0]].ansible_host }}:3100

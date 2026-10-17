@@ -1,0 +1,64 @@
+---
+- name: Create Loki data directory
+  file:
+    path: "{{ loki_data_dir }}"
+    state: directory
+    mode: 0755
+    owner: "10001"
+    group: "10001"
+
+- name: Create Loki config directory
+  file:
+    path: "{{ loki_config_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Deploy Loki configuration
+  template:
+    src: loki-config.yml.j2
+    dest: "{{ loki_config_dir }}/loki-config.yml"
+    mode: 0644
+
+- name: Run Loki container
+  docker_container:
+    name: loki
+    image: "{{ loki_image }}"
+    restart_policy: always
+    state: started
+    ports:
+      - "{{ loki_port }}:3100"
+    volumes:
+      - "{{ loki_config_dir }}/loki-config.yml:/etc/loki/loki-config.yml:ro"
+      - "{{ loki_data_dir }}:/loki"
+    command: -config.file=/etc/loki/loki-config.yml
+
+- name: Wait for Loki to be ready
+  wait_for:
+    port: "{{ loki_port }}"
+    host: "localhost"
+    timeout: 30
+    delay: 3
+  ignore_errors: yes
+
+- name: Check Loki health
+  uri:
+    url: "http://localhost:{{ loki_port }}/ready"
+    status_code: 200
+  register: loki_health
+  retries: 5
+  delay: 3
+  ignore_errors: yes
+
+- name: Open Loki port
+  ufw:
+    rule: allow
+    port: "{{ loki_port }}"
+    proto: tcp
+  ignore_errors: yes
+
+- name: Display Loki access info
+  debug:
+    msg: |
+      ✅ Loki is running!
+      URL: http://{{ ansible_host }}:{{ loki_port }}
+      Data directory: {{ loki_data_dir }}

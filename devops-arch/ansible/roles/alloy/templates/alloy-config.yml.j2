@@ -1,0 +1,98 @@
+# Alloy configuration for log collection
+# Sends logs to Loki at {{ loki_url }}
+
+logging {
+  level = "info"
+  format = "logfmt"
+}
+
+# Scrape Docker container logs
+discovery.docker "docker" {
+  host = "unix:///var/run/docker.sock"
+  refresh_interval = "15s"
+}
+
+discovery.relabel "docker" {
+  targets = discovery.docker.docker.targets
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex = "/(.*)"
+    target_label = "container"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_image"]
+    target_label = "image"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_id"]
+    target_label = "container_id"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_label_com_docker_compose_service"]
+    target_label = "service"
+  }
+
+  rule {
+    source_labels = ["__meta_docker_container_label_com_docker_compose_project"]
+    target_label = "project"
+  }
+}
+
+loki.source.file "docker" {
+  targets = discovery.relabel.docker.output
+  forward_to = [loki.write.default.receiver]
+  file_watch = true
+}
+
+# Scrape system logs (syslog)
+loki.source.file "syslog" {
+  targets = [
+    {
+      __address__ = "localhost",
+      __path__   = "/var/log/syslog",
+      job        = "syslog",
+      host       = "{{ ansible_host }}",
+    },
+    {
+      __address__ = "localhost",
+      __path__   = "/var/log/auth.log",
+      job        = "authlog",
+      host       = "{{ ansible_host }}",
+    },
+  ]
+  forward_to = [loki.write.default.receiver]
+  file_watch = true
+}
+
+# Scrape journald logs (for systemd services)
+loki.source.journal "journald" {
+  path = "/var/log/journal"
+  forward_to = [loki.write.default.receiver]
+  labels = {
+    job = "journald",
+    host = "{{ ansible_host }}",
+  }
+}
+
+# Send all logs to Loki
+loki.write "default" {
+  endpoint {
+    url = "{{ loki_url }}/loki/api/v1/push"
+    timeout = "10s"
+  }
+  external_labels = {
+    environment = "{{ ENV | default('dev') }}"
+    host = "{{ ansible_host }}"
+  }
+}
+
+# Health check endpoint
+http {
+  listen_address = "0.0.0.0"
+  listen_port = {{ alloy_port }}
+  namespace = "alloy"
+}

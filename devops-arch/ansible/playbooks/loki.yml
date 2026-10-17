@@ -1,0 +1,6 @@
+---
+- name: Setup Loki on monitoring node
+  hosts: monitoring_ops
+  become: yes
+  roles:
+    - loki
